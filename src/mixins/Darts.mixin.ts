@@ -22,18 +22,34 @@ export class DartsMixin extends Vue {
   public scorable = [15, 16, 17, 18, 19, 20, 25];
 
   /**
+   * Buttons list
+   *
+   * @type {Button[]}
+   * @memberof DartsMixin
+   */
+  public buttons!: Button[];
+
+  /**
    * Which player's turn is it
    *
    * @memberof DartsMixin
    */
-  public turn = 0;
+  public turn!: number;
 
   /**
    * Throws left in the current turn
    *
    * @memberof DartsMixin
    */
-  public throwsLeft = 3;
+  public throwsLeft!: number;
+
+  /**
+   * Players list
+   *
+   * @type {Player[]}
+   * @memberof DartsMixin
+   */
+  public players!: Player[];
 
   /**
    * Score multiplier
@@ -48,18 +64,6 @@ export class DartsMixin extends Vue {
    * @memberof DartsMixin
    */
   public clicksToOpen = 3;
-
-  /**
-   * List of players
-   *
-   * @type {Player[]}
-   * @memberof DartsMixin
-   */
-  public players: Player[] = new Array(
-    parseInt(localStorage.getItem("players") as string) || 2
-  )
-    .fill(0)
-    .map((_, index) => ({ name: `Player ${index + 1}`, score: 0, state: {} }));
 
   /**
    * List of modifiers
@@ -79,6 +83,45 @@ export class DartsMixin extends Vue {
    * @memberof DartsMixin
    */
   public data() {
+    const buttons: Button[] = this.getButtons();
+    const gameData = localStorage.getItem("game");
+    if (gameData) {
+      const parsedGameData = JSON.parse(gameData);
+      return {
+        buttons,
+        players: parsedGameData.players,
+        turn: parsedGameData.turn,
+        throwsLeft: parsedGameData.throwsLeft
+      };
+    }
+    return { buttons, players: this.getPlayers(), turn: 0, throwsLeft: 3 };
+  }
+
+  /**
+   * Creates players list
+   *
+   * @private
+   * @returns {Player[]}
+   * @memberof DartsMixin
+   */
+  private getPlayers(): Player[] {
+    return new Array(parseInt(localStorage.getItem("players") as string) || 2)
+      .fill(0)
+      .map((_, index) => ({
+        name: `Player ${index + 1}`,
+        score: 0,
+        state: {}
+      }));
+  }
+
+  /**
+   * Creates score buttons
+   *
+   * @private
+   * @returns
+   * @memberof DartsMixin
+   */
+  private getButtons() {
     const buttons: Button[] = new Array(20).fill(0).map((_, index) => ({
       text: index + 1,
       score: index + 1,
@@ -91,8 +134,7 @@ export class DartsMixin extends Vue {
       class: "btn-100 btn-danger",
       alwaysNegative: true
     });
-
-    return { buttons };
+    return buttons;
   }
 
   /**
@@ -132,5 +174,32 @@ export class DartsMixin extends Vue {
       this.throwsLeft = 3;
       this.turn = (this.turn + 1) % this.players.length;
     }
+    this.saveState();
+  }
+
+  /**
+   * Saves current state of the game
+   *
+   * @memberof DartsMixin
+   */
+  public saveState() {
+    localStorage.setItem(
+      "game",
+      JSON.stringify({
+        players: this.players,
+        turn: this.turn,
+        throwsLeft: this.throwsLeft
+      })
+    );
+  }
+
+  /**
+   * Resets state of the game
+   *
+   * @memberof DartsMixin
+   */
+  reset() {
+    localStorage.removeItem("game");
+    location.reload();
   }
 }
