@@ -1,0 +1,61 @@
+<div class="darts-panel">
+  <div class="card mt-5">
+    <h1 class="card-title text-center">MASTER OUT!</h1>
+
+    <h2 class="text-center">{{ players[turn].name }} turn!</h2>
+
+    <h3 class="text-center">Throws left: {{ throwsLeft }}</h3>
+
+    <div class="card-body">
+      <div>
+        <button
+          v-for="(modifier, index) in modifiers"
+          class="btn mb-2"
+          :class="modifier.class"
+          @click="triggerMultiplier(modifier.modifier)"
+        >
+          <strong>{{ modifier.text }}</strong>
+          <span v-if="multiplier === modifier.modifier" class="ml-2"
+            >Active</span
+          >
+        </button>
+      </div>
+
+      <button
+        v-for="(button, index) in buttons"
+        :key="`button_${index}`"
+        :class="button.class"
+        class="btn btn-primary mb-2"
+        @click="score(button)"
+      >
+        {{ button.text }}
+      </button>
+
+      <table class="table mt-5">
+        <thead>
+          <tr>
+            <th>Player</th>
+            <th>Score</th>
+            <th>Clicks</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr v-for="(player, index) in players" :key="`player_${index}`">
+            <td>{{ player.name }}</td>
+            <td>{{ player.score }}</td>
+            <td>
+              <span
+                v-for="(number) in scorable"
+                :key="`player_${index}_number_${number}`"
+                class="mr-2"
+              >
+                <strong>{{ number }}: {{ player.state[number] || 0 }}</strong>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
