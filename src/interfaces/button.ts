@@ -1,12 +1,12 @@
 /**
- * Przycisk wyniku rzutu
+ * Score button
  *
  * @export
  * @interface Button
  */
 export interface Button {
   /**
-   * Tekst przycisku
+   * Button text
    *
    * @type {(string | number)}
    * @memberof Button
@@ -14,7 +14,7 @@ export interface Button {
   text: string | number;
 
   /**
-   * Punktacja
+   * Score
    *
    * @type {number}
    * @memberof Button
@@ -22,7 +22,7 @@ export interface Button {
   score: number;
 
   /**
-   * Klasa przycisku
+   * CSS classes
    *
    * @type {string}
    * @memberof Button
@@ -30,7 +30,7 @@ export interface Button {
   class?: string;
 
   /**
-   * Zawsze negatywny wynik
+   * Always score as negative
    *
    * @type {boolean}
    * @memberof Button

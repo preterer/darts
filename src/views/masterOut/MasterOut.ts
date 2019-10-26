@@ -1,63 +1,25 @@
-import Vue from "vue";
-import Component from "vue-class-component";
+import Component, { mixins } from "vue-class-component";
 
 import template from "./MasterOut.html";
 import { Button } from "../../interfaces/button";
 import { Player } from "../../interfaces/player";
-import { Modifier } from "../../interfaces/modifier";
+import { DartsMixin } from "../../mixins/Darts.mixin";
 
+/**
+ * Master out game mode
+ *
+ * @export
+ * @class MasterOut
+ * @extends {mixins(DartsMixin)}
+ */
 @Component({ name: "MasterOut", template })
-export class MasterOut extends Vue {
-  public scorable = [15, 16, 17, 18, 19, 20, 25];
-
-  public turn = 0;
-
-  public throwsLeft = 3;
-
-  public multiplier = 1;
-
-  public double = false;
-
-  public tripple = false;
-
-  private clicksToOpen = 3;
-
-  public players: Player[] = new Array(
-    parseInt(localStorage.getItem("players") as string) || 2
-  )
-    .fill(0)
-    .map((_, index) => ({ name: `Player ${index + 1}`, score: 0, state: {} }));
-
-  public modifiers: Modifier[] = [
-    { modifier: 2, text: "Double!", class: "btn-info btn-50" },
-    { modifier: 3, text: "Tripple!", class: "btn-warning btn-50" }
-  ];
-
-  public data() {
-    const buttons: Button[] = new Array(20).fill(0).map((_, index) => ({
-      text: index + 1,
-      score: index + 1,
-      class: "btn-20"
-    }));
-    buttons.push({ text: "Bulls eye!", score: 25, class: "btn-100" });
-    buttons.push({
-      text: "Miss!",
-      score: 25,
-      class: "btn-100 btn-danger",
-      alwaysNegative: true
-    });
-
-    return { buttons };
-  }
-
-  public triggerMultiplier(modifier: number) {
-    if (this.multiplier === modifier) {
-      this.multiplier = 1;
-    } else {
-      this.multiplier = modifier;
-    }
-  }
-
+export class MasterOut extends mixins(DartsMixin) {
+  /**
+   * Calculates points
+   *
+   * @param {Button} button
+   * @memberof MasterOut
+   */
   public score(button: Button): void {
     const player = this.players[this.turn];
     if (this.scorable.includes(button.score) && !button.alwaysNegative) {
@@ -68,6 +30,15 @@ export class MasterOut extends Vue {
     this.endThrow();
   }
 
+  /**
+   * Scores a scorable field hit
+   *
+   * @private
+   * @param {Player} player
+   * @param {Button} button
+   * @returns {void}
+   * @memberof MasterOut
+   */
   private scoreScorable(player: Player, button: Button): void {
     const isClosed = this.players
       .map(player => player.state)
@@ -78,6 +49,14 @@ export class MasterOut extends Vue {
     this.scoreNotClosed(player, button);
   }
 
+  /**
+   * Scores a field that is not closed yet
+   *
+   * @private
+   * @param {Player} currentPlayer
+   * @param {Button} button
+   * @memberof MasterOut
+   */
   private scoreNotClosed(currentPlayer: Player, button: Button) {
     const currentPlayerState = currentPlayer.state;
 
@@ -93,6 +72,14 @@ export class MasterOut extends Vue {
     }
   }
 
+  /**
+   * Updates player state
+   *
+   * @private
+   * @param {*} currentPlayerState
+   * @param {Button} button
+   * @memberof MasterOut
+   */
   private updatePlayerState(currentPlayerState: any, button: Button) {
     currentPlayerState[button.score] = currentPlayerState[button.score] || 0;
     const scoreAfterUpdate = currentPlayerState[button.score] + this.multiplier;
@@ -104,22 +91,16 @@ export class MasterOut extends Vue {
     this.multiplier = scoreAfterUpdate - this.clicksToOpen;
   }
 
+  /**
+   * Adds scores to other players
+   *
+   * @private
+   * @param {Button} button
+   * @memberof MasterOut
+   */
   private addOtherPlayersScore(button: Button) {
     this.players
       .filter(player => player.state[button.score] !== this.clicksToOpen)
       .forEach(player => this.appendPlayerScore(player, button));
-  }
-
-  private appendPlayerScore(player: Player, button: Button): void {
-    player.score += button.score * this.multiplier;
-  }
-
-  private endThrow() {
-    this.multiplier = 1;
-    this.throwsLeft--;
-    if (this.throwsLeft === 0) {
-      this.throwsLeft = 3;
-      this.turn = (this.turn + 1) % this.players.length;
-    }
   }
 }

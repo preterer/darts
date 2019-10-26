@@ -1,12 +1,12 @@
 /**
- * Zawodnik
+ * Player
  *
  * @export
  * @interface Player
  */
 export interface Player {
   /**
-   * Nazwa zawodnika
+   * Name
    *
    * @type {string}
    * @memberof Player
@@ -14,7 +14,7 @@ export interface Player {
   name: string;
 
   /**
-   * Aktualny wynik
+   * Score
    *
    * @type {number}
    * @memberof Player
@@ -22,7 +22,7 @@ export interface Player {
   score: number;
 
   /**
-   * Stan zakmniętych/otwartych pól
+   * State of open/closed fields
    *
    * @type {*}
    * @memberof Player

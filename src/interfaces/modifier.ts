@@ -1,12 +1,12 @@
 /**
- * Modyfikator wartości
+ * Throw modifier
  *
  * @export
  * @interface Modifier
  */
 export interface Modifier {
   /**
-   * Tekst przycisku
+   * Button text
    *
    * @type {string}
    * @memberof Modifier
@@ -14,7 +14,7 @@ export interface Modifier {
   text: string;
 
   /**
-   * Modyfikator
+   * Modifier
    *
    * @type {number}
    * @memberof Modifier
@@ -22,7 +22,7 @@ export interface Modifier {
   modifier: number;
 
   /**
-   * Klasa przycisku
+   * CSS class
    *
    * @type {string}
    * @memberof Modifier
