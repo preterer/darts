@@ -1,0 +1,28 @@
+<div>
+  <div class="players">
+    <div class="card mt-5">
+      <div class="card-body">
+        <label class="dib mr-3"><strong>Players amount:</strong></label>
+        <input class="form-control dib" type="number" v-model="playersAmount" />
+      </div>
+    </div>
+  </div>
+
+  <div class="game-modes">
+    <div class="card mt-5">
+      <div class="card-body text-center">
+        <h1 class="card-title">Game modes</h1>
+
+        <ul class="list-group">
+          <router-link
+            v-for="(mode, index) of modes"
+            :key="`mode_${index}`"
+            :to="mode.route"
+          >
+            <li class="list-group-item">{{ mode.name }}</li>
+          </router-link>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+{
+  "View": {
+    "prefix": "view",
+    "body": [
+      "import Vue from \"vue\";",
+      "import Component from \"vue-class-component\";",
+      "",
+      "import template from \"./$1.html\";",
+      "",
+      "@Component({ name: \"$1\", template })",
+      "export class $1 extends Vue {}",
+      ""
+    ],
+    "description": "View"
+  }
+}

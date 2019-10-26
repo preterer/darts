@@ -1,0 +1,14 @@
+body {
+  background-color: #e3e3e3;
+}
+
+.players input.dib {
+  display: inline-block;
+  width: auto;
+}
+
+.game-modes .list-group-item {
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+}

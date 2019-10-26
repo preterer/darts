@@ -4,15 +4,16 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "webpack",
-    "watch": "webpack --watch",
+    "build": "webpack --mode development",
+    "watch": "webpack --mode development --watch true",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "core-js": "^2.6.5",
     "vue": "^2.6.10",
     "vue-class-component": "^7.1.0",
-    "vue-property-decorator": "^8.2.1"
+    "vue-property-decorator": "^8.3.0",
+    "vue-router": "^3.1.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.11.0",
