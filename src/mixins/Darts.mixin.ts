@@ -66,6 +66,16 @@ export class DartsMixin extends Vue {
   public clicksToOpen = 3;
 
   /**
+   * Game history
+   *
+   * @private
+   * @type {any[]}
+   * @memberof DartsMixin
+   */
+  private history: any[] =
+    JSON.parse(localStorage.getItem("history") as string) || [];
+
+  /**
    * List of modifiers
    *
    * @type {Modifier[]}
@@ -128,13 +138,47 @@ export class DartsMixin extends Vue {
       class: "btn-20"
     }));
     buttons.push({ text: "Bulls eye!", score: 25, class: "btn-100" });
-    buttons.push({
+    buttons.push(this.getMissButton());
+    return buttons;
+  }
+
+  /**
+   * Creates a miss button (different behaviour in different game modes
+   *
+   * @returns {Button}
+   * @memberof DartsMixin
+   */
+  public getMissButton(): Button {
+    return {
       text: "Miss!",
-      score: 25,
+      score: 0,
       class: "btn-100 btn-danger",
       alwaysNegative: true
-    });
-    return buttons;
+    };
+  }
+
+  /**
+   * Throw action
+   *
+   * @param {Button} button
+   * @memberof DartsMixin
+   */
+  public throwAction(button: Button): void {
+    this.saveHistory();
+    const player = this.players[this.turn];
+    this.score(player, button);
+    this.endThrow();
+  }
+
+  /**
+   * Scores a player throw
+   *
+   * @param {Player} player
+   * @param {Button} button
+   * @memberof DartsMixin
+   */
+  public score(player: Player, button: Button): void {
+    this.appendPlayerScore(player, button);
   }
 
   /**
@@ -178,19 +222,37 @@ export class DartsMixin extends Vue {
   }
 
   /**
+   * Saves history state
+   *
+   * @memberof DartsMixin
+   */
+  public saveHistory() {
+    this.history.push(JSON.parse(JSON.stringify(this.getState())));
+    localStorage.setItem("history", JSON.stringify(this.history));
+  }
+
+  /**
    * Saves current state of the game
    *
    * @memberof DartsMixin
    */
   public saveState() {
-    localStorage.setItem(
-      "game",
-      JSON.stringify({
-        players: this.players,
-        turn: this.turn,
-        throwsLeft: this.throwsLeft
-      })
-    );
+    localStorage.setItem("game", JSON.stringify(this.getState()));
+  }
+
+  /**
+   * Creates state object
+   *
+   * @private
+   * @returns
+   * @memberof DartsMixin
+   */
+  private getState() {
+    return {
+      players: this.players,
+      turn: this.turn,
+      throwsLeft: this.throwsLeft
+    };
   }
 
   /**
@@ -198,8 +260,24 @@ export class DartsMixin extends Vue {
    *
    * @memberof DartsMixin
    */
-  reset() {
+  public reset() {
     localStorage.removeItem("game");
     location.reload();
+  }
+
+  /**
+   * Undos last throw
+   *
+   * @memberof DartsMixin
+   */
+  public undo() {
+    if (this.history.length) {
+      const state = this.history.pop();
+      this.$set(this, "players", state.players);
+      // this.players = state.players;
+      this.turn = state.turn;
+      this.throwsLeft = state.throwsLeft;
+      this.saveState();
+    }
   }
 }

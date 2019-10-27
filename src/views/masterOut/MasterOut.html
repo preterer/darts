@@ -26,7 +26,7 @@
         :key="`button_${index}`"
         :class="button.class"
         class="btn btn-primary mb-2"
-        @click="score(button)"
+        @click="throwAction(button)"
       >
         {{ button.text }}
       </button>
@@ -57,7 +57,11 @@
         </tbody>
       </table>
 
-      <button class="pull-left btn btn-danger btn-100" @click="reset">
+      <button class="btn btn-warning btn-100 mb-3" @click="undo">
+        UNDO!
+      </button>
+
+      <button class="btn btn-danger btn-100" @click="reset">
         RESET!
       </button>
     </div>

@@ -15,19 +15,32 @@ import { DartsMixin } from "../../mixins/Darts.mixin";
 @Component({ name: "MasterOut", template })
 export class MasterOut extends mixins(DartsMixin) {
   /**
+   * Creates a miss button (different behaviour in different game modes
+   *
+   * @returns {Button}
+   * @memberof MasterOut
+   */
+  public getMissButton(): Button {
+    return {
+      text: "Miss!",
+      score: 25,
+      class: "btn-100 btn-danger",
+      alwaysNegative: true
+    };
+  }
+
+  /**
    * Calculates points
    *
    * @param {Button} button
    * @memberof MasterOut
    */
-  public score(button: Button): void {
-    const player = this.players[this.turn];
+  public score(player: Player, button: Button): void {
     if (this.scorable.includes(button.score) && !button.alwaysNegative) {
       this.scoreScorable(player, button);
     } else {
       this.appendPlayerScore(player, button);
     }
-    this.endThrow();
   }
 
   /**
