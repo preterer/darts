@@ -24,7 +24,7 @@
       <button
         v-for="(button, index) in buttons"
         :key="`button_${index}`"
-        :class="button.class"
+        :class="button.class + (isClosed(button) ? ' btn-warning' : '')"
         class="btn btn-primary mb-2"
         @click="throwAction(button)"
       >
@@ -36,7 +36,9 @@
           <tr>
             <th>Player</th>
             <th>Score</th>
-            <th>Clicks</th>
+            <th v-for="(number) in scorable" :key="`number_${number}`">
+              <strong>{{ number }}</strong>
+            </th>
           </tr>
         </thead>
 
@@ -44,14 +46,13 @@
           <tr v-for="(player, index) in players" :key="`player_${index}`">
             <td>{{ player.name }}</td>
             <td>{{ player.score }}</td>
-            <td>
-              <span
-                v-for="(number) in scorable"
-                :key="`player_${index}_number_${number}`"
-                class="mr-2"
-              >
-                <strong>{{ number }}: {{ player.state[number] || 0 }}</strong>
-              </span>
+            <td
+              v-for="(number) in scorable"
+              :key="`player_${index}_number_${number}`"
+            >
+              <strong v-for="i in (player.state[number] || 0)">
+                l
+              </strong>
             </td>
           </tr>
         </tbody>

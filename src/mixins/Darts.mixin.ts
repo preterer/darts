@@ -158,6 +158,22 @@ export class DartsMixin extends Vue {
   }
 
   /**
+   * Is button closed
+   *
+   * @param {Button} button
+   * @returns {boolean}
+   * @memberof DartsMixin
+   */
+  public isClosed(button: Button): boolean {
+    return (
+      !button.alwaysNegative &&
+      this.players.every(
+        player => player.state[button.score] === this.clicksToOpen
+      )
+    );
+  }
+
+  /**
    * Throw action
    *
    * @param {Button} button
