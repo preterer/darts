@@ -2,6 +2,10 @@ body {
   background-color: #e3e3e3;
 }
 
+.btn {
+  font-weight: bold;
+}
+
 .players input.dib {
   display: inline-block;
   width: auto;
@@ -29,4 +33,14 @@ body {
   width: calc(100% - 10px);
   margin-left: 5px;
   margin-right: 5px;
+}
+
+.darts-panel .dart {
+  width: 15px;
+  height: 30px;
+}
+
+.darts-panel .dart-cell {
+  width: calc(45px + 1.5rem);
+  height: 30px;
 }

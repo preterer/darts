@@ -2,22 +2,25 @@
   <div class="card mt-5">
     <h1 class="card-title text-center">MASTER OUT!</h1>
 
-    <h2 class="text-center">{{ players[turn].name }} turn!</h2>
+    <div v-if="!!winner()">
+      <h2 class="text-center">{{ winner().name }} won!</h2>
+    </div>
 
-    <h3 class="text-center">Throws left: {{ throwsLeft }}</h3>
+    <div v-else>
+      <h2 class="text-center">{{ players[turn].name }} turn!</h2>
+
+      <h3 class="text-center">Throws left: {{ throwsLeft }}</h3>
+    </div>
 
     <div class="card-body">
       <div>
         <button
           v-for="(modifier, index) in modifiers"
           class="btn mb-2"
-          :class="modifier.class"
+          :class="multiplier === modifier.modifier ? modifier.activeClass : modifier.class"
           @click="triggerMultiplier(modifier.modifier)"
         >
-          <strong>{{ modifier.text }}</strong>
-          <span v-if="multiplier === modifier.modifier" class="ml-2"
-            >Active</span
-          >
+          {{ modifier.text }}
         </button>
       </div>
 
@@ -25,13 +28,14 @@
         v-for="(button, index) in buttons"
         :key="`button_${index}`"
         :class="button.class + (isClosed(button) ? ' btn-warning' : '')"
+        :disabled="!!winner()"
         class="btn btn-primary mb-2"
         @click="throwAction(button)"
       >
         {{ button.text }}
       </button>
 
-      <table class="table mt-5">
+      <table class="table mt-5 text-center">
         <thead>
           <tr>
             <th>Player</th>
@@ -49,10 +53,14 @@
             <td
               v-for="(number) in scorable"
               :key="`player_${index}_number_${number}`"
+              class="dart-cell"
             >
-              <strong v-for="i in (player.state[number] || 0)">
-                l
-              </strong>
+              <img
+                v-for="i in (player.state[number] || 0)"
+                :key="`player_${index}_state_{number}_i_${i}`"
+                src="../../img/dart.svg"
+                class="dart"
+              />
             </td>
           </tr>
         </tbody>

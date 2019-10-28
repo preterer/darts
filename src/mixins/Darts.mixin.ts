@@ -82,8 +82,18 @@ export class DartsMixin extends Vue {
    * @memberof DartsMixin
    */
   public modifiers: Modifier[] = [
-    { modifier: 2, text: "Double!", class: "btn-info btn-50" },
-    { modifier: 3, text: "Tripple!", class: "btn-warning btn-50" }
+    {
+      modifier: 2,
+      text: "Double!",
+      class: "btn-outline-info btn-50",
+      activeClass: "btn-info btn-50"
+    },
+    {
+      modifier: 3,
+      text: "Tripple!",
+      class: "btn-outline-warning btn-50",
+      activeClass: "btn-warning btn-50"
+    }
   ];
 
   /**
@@ -170,6 +180,45 @@ export class DartsMixin extends Vue {
       this.players.every(
         player => player.state[button.score] === this.clicksToOpen
       )
+    );
+  }
+
+  /**
+   * Checks if the game is finished
+   *
+   * @returns {boolean}
+   * @memberof DartsMixin
+   */
+  public winner(): Player | undefined {
+    return this.players.find(
+      player =>
+        this.hasPlayerClosedAll(player) && this.hasPlayerLowestScore(player)
+    );
+  }
+
+  /**
+   * Checks if player has the lowest score
+   *
+   * @private
+   * @param {Player} player
+   * @returns {unknown}
+   * @memberof DartsMixin
+   */
+  private hasPlayerLowestScore(player: Player): boolean {
+    return this.players.every(p => p.score >= player.score);
+  }
+
+  /**
+   * Chcecks if player has closed all fields
+   *
+   * @private
+   * @param {Player} player
+   * @returns
+   * @memberof DartsMixin
+   */
+  private hasPlayerClosedAll(player: Player): boolean {
+    return this.scorable.every(
+      score => player.state[score] === this.clicksToOpen
     );
   }
 

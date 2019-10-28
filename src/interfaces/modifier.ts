@@ -28,4 +28,12 @@ export interface Modifier {
    * @memberof Modifier
    */
   class?: string;
+
+  /**
+   * CSS class when active
+   *
+   * @type {string}
+   * @memberof Modifier
+   */
+  activeClass?: string;
 }
