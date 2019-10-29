@@ -6,6 +6,12 @@ body {
   font-weight: bold;
 }
 
+.btn-back {
+  width: 100px;
+  position: absolute;
+  left: calc(2.25rem + 5px);
+}
+
 .players input.dib {
   display: inline-block;
   width: auto;

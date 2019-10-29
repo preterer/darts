@@ -1,5 +1,9 @@
 <div class="darts-panel">
-  <div class="card mt-5">
+  <div class="card mt-5 p-3">
+    <router-link class="btn btn-warning btn-back" :to="{name: 'home'}">
+      Back
+    </router-link>
+
     <h1 class="card-title text-center">MASTER OUT!</h1>
 
     <div v-if="!!winner()">
