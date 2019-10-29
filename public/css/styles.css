@@ -12,8 +12,18 @@ body {
   left: calc(2.25rem + 5px);
 }
 
+.players .btn-add {
+  width: 100px;
+  position: absolute;
+  right: calc(2.25rem + 5px);
+}
+
 .players input.dib {
   display: inline-block;
+  width: auto;
+}
+
+.players .form-control {
   width: auto;
 }
 
