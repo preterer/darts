@@ -15,7 +15,7 @@ import { DartsMixin } from "../../mixins/Darts.mixin";
 @Component({ name: "MasterOut", template })
 export class MasterOut extends mixins(DartsMixin) {
   /**
-   * Creates a miss button (different behaviour in different game modes
+   * Creates a miss button (different behaviour in different game modes)
    *
    * @returns {Button}
    * @memberof MasterOut

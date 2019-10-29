@@ -1,9 +1,9 @@
-import Vue from "vue";
-import Component from "vue-class-component";
+import Component, { mixins } from "vue-class-component";
 
 import { Button } from "../interfaces/button";
 import { Player } from "../interfaces/player";
 import { Modifier } from "../interfaces/modifier";
+import { PlayersMixin } from "./Players.mixin";
 
 /**
  * Mixin of a darts game
@@ -13,7 +13,7 @@ import { Modifier } from "../interfaces/modifier";
  * @extends {Vue}
  */
 @Component
-export class DartsMixin extends Vue {
+export class DartsMixin extends mixins(PlayersMixin) {
   /**
    * Scorable fields
    *
@@ -115,23 +115,6 @@ export class DartsMixin extends Vue {
       };
     }
     return { buttons, players: this.getPlayers(), turn: 0, throwsLeft: 3 };
-  }
-
-  /**
-   * Creates players list
-   *
-   * @private
-   * @returns {Player[]}
-   * @memberof DartsMixin
-   */
-  private getPlayers(): Player[] {
-    return new Array(parseInt(localStorage.getItem("players") as string) || 2)
-      .fill(0)
-      .map((_, index) => ({
-        name: `Player ${index + 1}`,
-        score: 0,
-        state: {}
-      }));
   }
 
   /**
@@ -326,8 +309,13 @@ export class DartsMixin extends Vue {
    * @memberof DartsMixin
    */
   public reset() {
-    localStorage.removeItem("game");
-    location.reload();
+    if (
+      !!this.winner() ||
+      confirm("Are you sure you want to reset the game progress?")
+    ) {
+      localStorage.removeItem("game");
+      location.reload();
+    }
   }
 
   /**
