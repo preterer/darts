@@ -36,11 +36,18 @@ body {
 }
 
 .darts-panel .dart {
-  width: 15px;
   height: 30px;
 }
 
-.darts-panel .dart-cell {
-  width: calc(45px + 1.5rem);
-  height: 30px;
+.darts-panel .dart-column {
+  width: calc((100% - 11em) / 7);
+  height: calc(30px + 1.5rem);
+}
+
+.darts-panel .player-column {
+  width: 7em;
+}
+
+.darts-panel .score-column {
+  width: 4em;
 }
