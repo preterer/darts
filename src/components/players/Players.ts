@@ -7,20 +7,12 @@ import template from "./Players.html";
 @Component({ name: "Players", template })
 export class Players extends mixins(PlayersMixin) {
   /**
-   * List of players
-   *
-   * @type {Player[]}
-   * @memberof Players
-   */
-  public players: Player[] = this.getPlayers();
-
-  /**
    * Adds a player to the list
    *
    * @memberof Players
    */
   public addPlayer(): void {
-    this.players.push({
+    this.$store.dispatch("players/add", {
       name: `Player ${this.players.length + 1}`,
       score: 0,
       state: {}
@@ -33,18 +25,17 @@ export class Players extends mixins(PlayersMixin) {
    * @param {number} index
    * @memberof Players
    */
-  public removePlayer(index: number): void {
-    if (this.players.length > 1) {
-      this.players.splice(index, 1);
-    }
+  public removePlayer(id: number): void {
+    this.$store.dispatch("players/remove", id);
   }
 
   /**
-   * Saves players list to store
+   * Updates players list
    *
+   * @param {Player} player
    * @memberof Players
    */
-  public savePlayers(): void {
-    localStorage.setItem("players", JSON.stringify(this.players));
+  public updatePlayer(player: Player): void {
+    this.$store.dispatch("players/update", player);
   }
 }

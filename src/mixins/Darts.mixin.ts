@@ -27,7 +27,7 @@ export class DartsMixin extends mixins(PlayersMixin) {
    * @type {Button[]}
    * @memberof DartsMixin
    */
-  public buttons!: Button[];
+  public buttons: Button[] = this.getButtons();
 
   /**
    * Which player's turn is it
@@ -103,18 +103,15 @@ export class DartsMixin extends mixins(PlayersMixin) {
    * @memberof DartsMixin
    */
   public data() {
-    const buttons: Button[] = this.getButtons();
     const gameData = localStorage.getItem("game");
     if (gameData) {
       const parsedGameData = JSON.parse(gameData);
       return {
-        buttons,
-        players: parsedGameData.players,
         turn: parsedGameData.turn,
         throwsLeft: parsedGameData.throwsLeft
       };
     }
-    return { buttons, players: this.getPlayers(), turn: 0, throwsLeft: 3 };
+    return { turn: 0, throwsLeft: 3 };
   }
 
   /**

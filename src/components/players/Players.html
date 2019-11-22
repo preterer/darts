@@ -12,20 +12,22 @@
           class="col-12 col-md-6 col-lg-4 form-group"
         >
           <div class="input-group">
-            <input v-model="player.name" class="form-control" />
+            <input
+              v-model="player.name"
+              class="form-control"
+              @input="updatePlayer(player)"
+            />
 
             <div class="input-group-append">
-              <btn class="btn-danger" text="[*]" @click="removePlayer(index)" />
+              <btn
+                class="btn-danger"
+                text="[*]"
+                @click="removePlayer(player.id)"
+              />
             </div>
           </div>
         </div>
       </div>
-
-      <btn
-        class="btn-warning mt-2 float-right"
-        text="Save"
-        @click="savePlayers"
-      />
     </div>
   </div>
 </div>

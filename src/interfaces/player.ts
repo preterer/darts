@@ -6,6 +6,14 @@
  */
 export interface Player {
   /**
+   * Identifier
+   *
+   * @type {number}
+   * @memberof Player
+   */
+  id?: number;
+
+  /**
    * Name
    *
    * @type {string}
