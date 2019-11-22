@@ -1,9 +1,9 @@
 import Vue from "vue";
 import Component from "vue-class-component";
-
-import template from "./GameData.html";
 import { Prop } from "vue-property-decorator";
+
 import { Player } from "../../interfaces/player";
+import template from "./GameData.html";
 
 @Component({ name: "GameData", template })
 export class GameData extends Vue {

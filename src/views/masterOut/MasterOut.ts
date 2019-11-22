@@ -1,10 +1,10 @@
 import Component, { mixins } from "vue-class-component";
 
-import template from "./MasterOut.html";
 import { GameData } from "../../components/gameData/GameData";
 import { Button } from "../../interfaces/button";
 import { Player } from "../../interfaces/player";
 import { DartsMixin } from "../../mixins/Darts.mixin";
+import template from "./MasterOut.html";
 
 /**
  * Master out game mode

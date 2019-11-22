@@ -1,4 +1,5 @@
 import { RouteConfig } from "vue-router";
+
 import { MasterOut } from "../views/masterOut/MasterOut";
 
 export const masterOutRoute: RouteConfig = {
