@@ -19,7 +19,7 @@ export class Btn extends Vue {
    * @type {string}
    * @memberof Button
    */
-  @Prop()
+  @Prop({ type: String })
   public text?: string;
 
   /**
@@ -28,7 +28,7 @@ export class Btn extends Vue {
    * @type {string}
    * @memberof Button
    */
-  @Prop()
+  @Prop({ type: String })
   public icon?: string;
 
   /**
