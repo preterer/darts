@@ -22,7 +22,7 @@ export class MasterOut extends mixins(DartsMixin) {
    */
   public getMissButton(): Button {
     return {
-      text: "Miss!",
+      text: "Miss",
       score: 25,
       class: "btn-100 btn-danger",
       alwaysNegative: true
