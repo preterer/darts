@@ -6,15 +6,11 @@
 
     <h1 class="card-title text-center">MASTER OUT</h1>
 
-    <div v-if="!!winner()">
-      <h2 class="text-center">{{ winner().name }} won!</h2>
-    </div>
-
-    <div v-else>
-      <h2 class="text-center">{{ players[turn].name }} turn</h2>
-
-      <h3 class="text-center">Throws left: {{ throwsLeft }}</h3>
-    </div>
+    <GameData
+      :winner="winner()"
+      :currentPlayer="players[turn]"
+      :throwsLeft="throwsLeft"
+    />
 
     <div class="card-body">
       <div>

@@ -1,0 +1,11 @@
+<div class="game-data">
+  <template v-if="!!winner">
+    <h2 class="text-center">{{ winner.name }} won!</h2>
+  </template>
+
+  <template v-else>
+    <h2 class="text-center">{{ currentPlayer.name }} turn</h2>
+
+    <h3 class="text-center">Throws left: {{ throwsLeft }}</h3>
+  </template>
+</div>

@@ -136,7 +136,7 @@ export class DartsMixin extends mixins(PlayersMixin) {
   }
 
   /**
-   * Creates a miss button (different behaviour in different game modes
+   * Creates a miss button (different behaviour in different game modes)
    *
    * @returns {Button}
    * @memberof DartsMixin

@@ -1,6 +1,7 @@
 import Component, { mixins } from "vue-class-component";
 
 import template from "./MasterOut.html";
+import { GameData } from "../../components/gameData/GameData";
 import { Button } from "../../interfaces/button";
 import { Player } from "../../interfaces/player";
 import { DartsMixin } from "../../mixins/Darts.mixin";
@@ -12,7 +13,7 @@ import { DartsMixin } from "../../mixins/Darts.mixin";
  * @class MasterOut
  * @extends {mixins(DartsMixin)}
  */
-@Component({ name: "MasterOut", template })
+@Component({ name: "MasterOut", template, components: { GameData } })
 export class MasterOut extends mixins(DartsMixin) {
   /**
    * Creates a miss button (different behaviour in different game modes)
