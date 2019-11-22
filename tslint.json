@@ -3,6 +3,7 @@
     "class-name": true,
     "comment-format": [true, "check-space"],
     "indent": [true, "spaces"],
+    "ordered-imports": true,
     "one-line": [true, "check-open-brace", "check-whitespace"],
     "no-var-keyword": true,
     "quotemark": [true, "double", "avoid-escape"],
