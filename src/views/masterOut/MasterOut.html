@@ -18,26 +18,25 @@
 
     <div class="card-body">
       <div>
-        <button
+        <btn
           v-for="(modifier, index) in modifiers"
+          :key="'modifier_' + index"
           class="btn mb-2"
           :class="multiplier === modifier.modifier ? modifier.activeClass : modifier.class"
+          :text="modifier.text"
           @click="triggerMultiplier(modifier.modifier)"
-        >
-          {{ modifier.text }}
-        </button>
+        />
       </div>
 
-      <button
+      <btn
         v-for="(button, index) in buttons"
-        :key="`button_${index}`"
+        :key="'button_' + index"
         :class="button.class + (isClosed(button) ? ' btn-warning' : '')"
         :disabled="!!winner()"
+        :text="button.text"
         class="btn btn-primary mb-2"
         @click="throwAction(button)"
-      >
-        {{ button.text }}
-      </button>
+      />
 
       <table class="table mt-5 text-center">
         <thead>
@@ -73,13 +72,9 @@
         </tbody>
       </table>
 
-      <button class="btn btn-warning btn-100 mb-3" @click="undo">
-        UNDO
-      </button>
+      <btn class="btn btn-warning btn-100 mb-3" text="UNDO" @click="undo" />
 
-      <button class="btn btn-danger btn-100" @click="reset">
-        RESET
-      </button>
+      <btn class="btn btn-danger btn-100" text="RESET" @click="reset" />
     </div>
   </div>
 </div>
