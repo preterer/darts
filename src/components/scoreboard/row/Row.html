@@ -1,0 +1,14 @@
+<tr>
+  <td>{{ player.name }}</td>
+
+  <td>{{ player.score }}</td>
+
+  <td v-for="number in numbers" :key="'number_' + number">
+    <img
+      v-for="i in (player.state[number] || 0)"
+      :key="`number_${number}_state_${i}`"
+      src="../../../img/dart.svg"
+      class="dart"
+    />
+  </td>
+</tr>

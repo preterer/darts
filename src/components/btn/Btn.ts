@@ -19,8 +19,8 @@ export class Btn extends Vue {
    * @type {string}
    * @memberof Button
    */
-  @Prop({ type: String })
-  public text?: string;
+  @Prop({ type: [String, Number] })
+  public text?: string | number;
 
   /**
    * Icon class

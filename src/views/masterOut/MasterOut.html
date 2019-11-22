@@ -34,39 +34,7 @@
         @click="throwAction(button)"
       />
 
-      <table class="table mt-5 text-center">
-        <thead>
-          <tr>
-            <th class="player-column">Player</th>
-            <th class="score-column">Score</th>
-            <th
-              class="dart-column"
-              v-for="(number) in scorable"
-              :key="`number_${number}`"
-            >
-              <strong>{{ number }}</strong>
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr v-for="(player, index) in players" :key="`player_${index}`">
-            <td>{{ player.name }}</td>
-            <td>{{ player.score }}</td>
-            <td
-              v-for="(number) in scorable"
-              :key="`player_${index}_number_${number}`"
-            >
-              <img
-                v-for="i in (player.state[number] || 0)"
-                :key="`player_${index}_state_{number}_i_${i}`"
-                src="../../img/dart.svg"
-                class="dart"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <Scoreboard :numbers="scorable" :players="players" />
 
       <btn class="btn btn-warning btn-100 mb-3" text="UNDO" @click="undo" />
 

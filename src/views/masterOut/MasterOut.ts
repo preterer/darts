@@ -1,6 +1,7 @@
 import Component, { mixins } from "vue-class-component";
 
 import { GameData } from "../../components/gameData/GameData";
+import { Scoreboard } from "../../components/scoreboard/Scoreboard";
 import { Button } from "../../interfaces/button";
 import { Player } from "../../interfaces/player";
 import { DartsMixin } from "../../mixins/Darts.mixin";
@@ -13,7 +14,11 @@ import template from "./MasterOut.html";
  * @class MasterOut
  * @extends {mixins(DartsMixin)}
  */
-@Component({ name: "MasterOut", template, components: { GameData } })
+@Component({
+  name: "MasterOut",
+  template,
+  components: { GameData, Scoreboard }
+})
 export class MasterOut extends mixins(DartsMixin) {
   /**
    * Creates a miss button (different behaviour in different game modes)
@@ -95,14 +100,18 @@ export class MasterOut extends mixins(DartsMixin) {
    * @memberof MasterOut
    */
   private updatePlayerState(currentPlayerState: any, button: Button) {
-    currentPlayerState[button.score] = currentPlayerState[button.score] || 0;
-    const scoreAfterUpdate = currentPlayerState[button.score] + this.multiplier;
-    if (scoreAfterUpdate > this.clicksToOpen) {
-      currentPlayerState[button.score] = this.clicksToOpen;
-    } else {
-      currentPlayerState[button.score] = scoreAfterUpdate;
-    }
-    this.multiplier = scoreAfterUpdate - this.clicksToOpen;
+    const clicksAfterUpdate =
+      (currentPlayerState[button.score] || 0) + this.multiplier;
+
+    this.$set(
+      currentPlayerState,
+      button.score,
+      clicksAfterUpdate > this.clicksToOpen
+        ? this.clicksToOpen
+        : clicksAfterUpdate
+    );
+
+    this.multiplier = clicksAfterUpdate - this.clicksToOpen;
   }
 
   /**

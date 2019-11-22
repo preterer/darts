@@ -1,0 +1,13 @@
+<thead>
+  <tr>
+    <th class="player-column">Player</th>
+    <th class="score-column">Score</th>
+    <th
+      class="dart-column"
+      v-for="(number) in numbers"
+      :key="'number_' + number"
+    >
+      <strong>{{ number }}</strong>
+    </th>
+  </tr>
+</thead>

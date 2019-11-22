@@ -1,0 +1,12 @@
+<table class="table mt-5 text-center">
+  <ScoreboardHeader :numbers="numbers" />
+
+  <tbody>
+    <ScoreboardRow
+      v-for="(player, index) in players"
+      :key="'player_' + index"
+      :numbers="numbers"
+      :player="player"
+    />
+  </tbody>
+</table>
