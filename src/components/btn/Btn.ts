@@ -2,7 +2,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 
-import template from "./Button.html";
+import template from "./Btn.html";
 
 /**
  * Button component
@@ -12,7 +12,7 @@ import template from "./Button.html";
  * @extends {Vue}
  */
 @Component({ name: "Button", template })
-export class Button extends Vue {
+export class Btn extends Vue {
   /**
    * Button text
    *
