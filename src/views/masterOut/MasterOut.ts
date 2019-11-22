@@ -1,9 +1,9 @@
 import Component, { mixins } from "vue-class-component";
 
+import { Button } from "#/interfaces/button";
+import { Player } from "#/interfaces/player";
 import { GameData } from "../../components/gameData/GameData";
 import { Scoreboard } from "../../components/scoreboard/Scoreboard";
-import { Button } from "../../interfaces/button";
-import { Player } from "../../interfaces/player";
 import { DartsMixin } from "../../mixins/Darts.mixin";
 import template from "./MasterOut.html";
 

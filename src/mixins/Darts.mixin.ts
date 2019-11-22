@@ -1,8 +1,8 @@
 import Component, { mixins } from "vue-class-component";
 
-import { Button } from "../interfaces/button";
-import { Modifier } from "../interfaces/modifier";
-import { Player } from "../interfaces/player";
+import { Button } from "#/interfaces/button";
+import { Modifier } from "#/interfaces/modifier";
+import { Player } from "#/interfaces/player";
 import { PlayersMixin } from "./Players.mixin";
 
 /**

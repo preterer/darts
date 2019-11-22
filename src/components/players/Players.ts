@@ -1,6 +1,6 @@
 import Component, { mixins } from "vue-class-component";
 
-import { Player } from "../../interfaces/player";
+import { Player } from "#/interfaces/player";
 import { PlayersMixin } from "../../mixins/Players.mixin";
 import template from "./Players.html";
 
