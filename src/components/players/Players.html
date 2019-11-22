@@ -1,8 +1,6 @@
 <div class="players">
   <div class="card mt-5 p-3">
-    <button class="btn btn-primary btn-add" @click="addPlayer">
-      Add!
-    </button>
+    <btn class="btn-primary btn-add" text="Add!" @click="addPlayer" />
 
     <h3 class="card-title text-center">Players</h3>
 
@@ -17,17 +15,17 @@
             <input v-model="player.name" class="form-control" />
 
             <div class="input-group-append">
-              <button class="btn btn-danger" @click="removePlayer(index)">
-                [*]
-              </button>
+              <btn class="btn-danger" text="[*]" @click="removePlayer(index)" />
             </div>
           </div>
         </div>
       </div>
 
-      <button class="btn btn-warning mt-2 float-right" @click="savePlayers">
-        Save!
-      </button>
+      <btn
+        class="btn-warning mt-2 float-right"
+        text="Save!"
+        @click="savePlayers"
+      />
     </div>
   </div>
 </div>

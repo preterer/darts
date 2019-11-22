@@ -12,11 +12,7 @@ export class Players extends mixins(PlayersMixin) {
    * @type {Player[]}
    * @memberof Players
    */
-  public players!: Player[];
-
-  public data() {
-    return { players: this.getPlayers() };
-  }
+  public players: Player[] = this.getPlayers();
 
   /**
    * Adds a player to the list
