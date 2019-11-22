@@ -45,7 +45,7 @@ module.exports = {
         use: ["vue-style-loader", "css-loader"]
       },
       {
-        test: /.html/,
+        test: /.html$/,
         use: ["html-loader"]
       }
     ]
@@ -57,8 +57,8 @@ module.exports = {
     }
   },
   devServer: {
-    historyApiFallback: true,
-    noInfo: true
+    contentBase: path.join(__dirname, "public"),
+    port: 9000
   },
   performance: {
     hints: false
