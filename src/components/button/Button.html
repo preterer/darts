@@ -1,0 +1,7 @@
+<button class="btn" @click="$emit('click')">
+  <slot>
+    <i v-if="icon" :class="iconClasses" />
+
+    <span v-if="text">{{ text }}</span>
+  </slot>
+</button>
