@@ -81,7 +81,7 @@ function getStoredPlayers(): Player[] | void {
  */
 function getDefaultPlayers(): Player[] {
   return [
-    { name: "Player 1", score: 0, state: {} },
-    { name: "Player 2", score: 0, state: {} }
+    { id: 1, name: "Player 1", score: 0, state: {} },
+    { id: 2, name: "Player 2", score: 0, state: {} }
   ];
 }
