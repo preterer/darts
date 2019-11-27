@@ -1,6 +1,7 @@
 import Component, { mixins } from "vue-class-component";
 
 import { Button } from "#/interfaces/button";
+import { GameWithPlayers } from "#/interfaces/gameWithPlayers";
 import { Player } from "#/interfaces/player";
 import { GameData } from "../../components/gameData/GameData";
 import { Scoreboard } from "../../components/scoreboard/Scoreboard";
@@ -19,7 +20,7 @@ import template from "./MasterOut.html";
   template,
   components: { GameData, Scoreboard }
 })
-export class MasterOut extends mixins(DartsMixin) {
+export class MasterOut extends mixins(DartsMixin) implements GameWithPlayers {
   /**
    * Creates a miss button (different behaviour in different game modes)
    *
@@ -36,8 +37,9 @@ export class MasterOut extends mixins(DartsMixin) {
   }
 
   /**
-   * Calculates points
+   * Scores a throw
    *
+   * @param {Player} player
    * @param {Button} button
    * @memberof MasterOut
    */
@@ -70,12 +72,12 @@ export class MasterOut extends mixins(DartsMixin) {
    *
    * @private
    * @param {Player} currentPlayer
-   * @param {Button} button
+   * @param {number} score
    * @memberof MasterOut
    */
   private scoreNotClosed(currentPlayer: Player, score: number): void {
     if (this.playerState(currentPlayer, score) !== this.clicksToOpen) {
-      this.updatePlayerState(currentPlayer, score);
+      this.updateStateAndMultiplier(currentPlayer, score);
     }
 
     const currentState = this.playerState(currentPlayer, score);
@@ -85,31 +87,45 @@ export class MasterOut extends mixins(DartsMixin) {
   }
 
   /**
+   * Updates player state and multiplier for scoring calculations
+   *
+   * @private
+   * @param {Player} player
+   * @param {number} score
+   * @memberof MasterOut
+   */
+  private updateStateAndMultiplier(player: Player, score: number): void {
+    const clicksBeforeUpdate = this.playerState(player, score);
+    const clicksAfterUpdate = clicksBeforeUpdate + this.multiplier;
+    const newMultiplier = clicksAfterUpdate - this.clicksToOpen;
+    if (clicksBeforeUpdate !== this.clicksToOpen) {
+      this.updateState(player, clicksAfterUpdate, score);
+    }
+    this.$store.commit("game/setMultiplier", newMultiplier);
+  }
+
+  /**
    * Updates player state
    *
    * @private
-   * @param {*} currentPlayerState
-   * @param {Button} button
+   * @param {number} clicks
+   * @param {Player} player
+   * @param {number} score
    * @memberof MasterOut
    */
-  private updatePlayerState(player: Player, score: number): void {
-    const clicksAfterUpdate = this.playerState(player, score) + this.multiplier;
-    const newState = Math.min(clicksAfterUpdate, this.clicksToOpen);
+  private updateState(player: Player, clicks: number, score: number): void {
+    const newState = Math.min(clicks, this.clicksToOpen);
     this.$store.commit("players/update", {
       ...player,
       state: { ...player.state, [score]: newState }
     });
-    this.$store.commit(
-      "game/setMultiplier",
-      clicksAfterUpdate - this.clicksToOpen
-    );
   }
 
   /**
    * Adds scores to other players
    *
    * @private
-   * @param {Button} button
+   * @param {number} score
    * @memberof MasterOut
    */
   private addOtherPlayersScore(score: number): void {

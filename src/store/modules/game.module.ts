@@ -18,7 +18,7 @@ export const game: Module<GameWithHistory, any> = {
 
   mutations: {
     setMultiplier(state, multiplier: number): void {
-      state.multiplier = multiplier;
+      state.multiplier = state.multiplier === multiplier ? 1 : multiplier;
     },
 
     saveHistory(state): void {

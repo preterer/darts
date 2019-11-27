@@ -1,6 +1,7 @@
 import Component, { mixins } from "vue-class-component";
 
 import { Button } from "#/interfaces/button";
+import { GameWithPlayers } from "#/interfaces/gameWithPlayers";
 import { Modifier } from "#/interfaces/modifier";
 import { Player } from "#/interfaces/player";
 import { PlayersMixin } from "./Players.mixin";
@@ -13,7 +14,8 @@ import { PlayersMixin } from "./Players.mixin";
  * @extends {Vue}
  */
 @Component
-export class DartsMixin extends mixins(PlayersMixin) {
+export class DartsMixin extends mixins(PlayersMixin)
+  implements GameWithPlayers {
   /**
    * Scorable fields
    *
@@ -60,6 +62,8 @@ export class DartsMixin extends mixins(PlayersMixin) {
   /**
    * Which player's turn is it
    *
+   * @readonly
+   * @type {number}
    * @memberof DartsMixin
    */
   public get turn(): number {
@@ -69,6 +73,8 @@ export class DartsMixin extends mixins(PlayersMixin) {
   /**
    * Throws left in the current turn
    *
+   * @readonly
+   * @type {number}
    * @memberof DartsMixin
    */
   public get throwsLeft(): number {
@@ -78,6 +84,8 @@ export class DartsMixin extends mixins(PlayersMixin) {
   /**
    * Score multiplier
    *
+   * @readonly
+   * @type {number}
    * @memberof DartsMixin
    */
   public get multiplier(): number {
@@ -88,10 +96,10 @@ export class DartsMixin extends mixins(PlayersMixin) {
    * Creates score buttons
    *
    * @private
-   * @returns
+   * @returns {Button[]}
    * @memberof DartsMixin
    */
-  private getButtons() {
+  private getButtons(): Button[] {
     const buttons: Button[] = new Array(20).fill(0).map((_, index) => ({
       text: index + 1,
       score: index + 1,
@@ -124,11 +132,7 @@ export class DartsMixin extends mixins(PlayersMixin) {
    * @memberof DartsMixin
    */
   public triggerMultiplier(multiplier: number): void {
-    if (this.multiplier === multiplier) {
-      this.$store.commit("game/setMultiplier", 1);
-    } else {
-      this.$store.commit("game/setMultiplier", multiplier);
-    }
+    this.$store.commit("game/setMultiplier", multiplier);
   }
 
   /**
@@ -146,9 +150,9 @@ export class DartsMixin extends mixins(PlayersMixin) {
   }
 
   /**
-   * Checks if the game is finished
+   * Returns winner of the game if it's finished yet
    *
-   * @returns {boolean}
+   * @returns {(Player | undefined)}
    * @memberof DartsMixin
    */
   public winner(): Player | undefined {
@@ -156,43 +160,6 @@ export class DartsMixin extends mixins(PlayersMixin) {
       player =>
         this.hasPlayerClosedAll(player) && this.hasPlayerLowestScore(player)
     );
-  }
-
-  /**
-   * Checks if player has the lowest score
-   *
-   * @private
-   * @param {Player} player
-   * @returns {unknown}
-   * @memberof DartsMixin
-   */
-  private hasPlayerLowestScore(player: Player): boolean {
-    return this.players.every(p => p.score >= player.score);
-  }
-
-  /**
-   * Chcecks if player has closed all fields
-   *
-   * @private
-   * @param {Player} player
-   * @returns
-   * @memberof DartsMixin
-   */
-  private hasPlayerClosedAll(player: Player): boolean {
-    return this.scorable.every(score => this.hasPlayerClosed(player, score));
-  }
-
-  /**
-   * Checks if player has closed a field
-   *
-   * @private
-   * @param {Player} player
-   * @param {number} score
-   * @returns {boolean}
-   * @memberof DartsMixin
-   */
-  private hasPlayerClosed(player: Player, score: number): boolean {
-    return this.playerState(player, score) === this.clicksToOpen;
   }
 
   /**
@@ -204,7 +171,7 @@ export class DartsMixin extends mixins(PlayersMixin) {
    * @returns {number}
    * @memberof DartsMixin
    */
-  protected playerState(player: Player, score: number): number {
+  public playerState(player: Player, score: number): number {
     return player.state[score] || 0;
   }
 
@@ -235,7 +202,7 @@ export class DartsMixin extends mixins(PlayersMixin) {
    * Appends player score
    *
    * @param {Player} player
-   * @param {Button} button
+   * @param {number} appendedScore
    * @memberof DartsMixin
    */
   public appendPlayerScore(player: Player, appendedScore: number): void {
@@ -282,5 +249,42 @@ export class DartsMixin extends mixins(PlayersMixin) {
    */
   public undo(): void {
     this.$store.commit("game/undo");
+  }
+
+  /**
+   * Checks if player has the lowest score
+   *
+   * @private
+   * @param {Player} player
+   * @returns {boolean}
+   * @memberof DartsMixin
+   */
+  private hasPlayerLowestScore(player: Player): boolean {
+    return this.players.every(p => p.score >= player.score);
+  }
+
+  /**
+   * Chcecks if player has closed all fields
+   *
+   * @private
+   * @param {Player} player
+   * @returns {boolean}
+   * @memberof DartsMixin
+   */
+  private hasPlayerClosedAll(player: Player): boolean {
+    return this.scorable.every(score => this.hasPlayerClosed(player, score));
+  }
+
+  /**
+   * Checks if player has closed a field
+   *
+   * @private
+   * @param {Player} player
+   * @param {number} score
+   * @returns {boolean}
+   * @memberof DartsMixin
+   */
+  private hasPlayerClosed(player: Player, score: number): boolean {
+    return this.playerState(player, score) === this.clicksToOpen;
   }
 }
