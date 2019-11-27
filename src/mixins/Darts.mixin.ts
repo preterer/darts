@@ -30,50 +30,11 @@ export class DartsMixin extends mixins(PlayersMixin) {
   public buttons: Button[] = this.getButtons();
 
   /**
-   * Which player's turn is it
-   *
-   * @memberof DartsMixin
-   */
-  public turn!: number;
-
-  /**
-   * Throws left in the current turn
-   *
-   * @memberof DartsMixin
-   */
-  public throwsLeft!: number;
-
-  /**
-   * Players list
-   *
-   * @type {Player[]}
-   * @memberof DartsMixin
-   */
-  public players!: Player[];
-
-  /**
-   * Score multiplier
-   *
-   * @memberof DartsMixin
-   */
-  public multiplier = 1;
-
-  /**
    * Clicks required to open a field
    *
    * @memberof DartsMixin
    */
   public clicksToOpen = 3;
-
-  /**
-   * Game history
-   *
-   * @private
-   * @type {any[]}
-   * @memberof DartsMixin
-   */
-  private history: any[] =
-    JSON.parse(localStorage.getItem("history") as string) || [];
 
   /**
    * List of modifiers
@@ -97,21 +58,30 @@ export class DartsMixin extends mixins(PlayersMixin) {
   ];
 
   /**
-   * Creates buttons
+   * Which player's turn is it
    *
-   * @returns
    * @memberof DartsMixin
    */
-  public data() {
-    const gameData = localStorage.getItem("game");
-    if (gameData) {
-      const parsedGameData = JSON.parse(gameData);
-      return {
-        turn: parsedGameData.turn,
-        throwsLeft: parsedGameData.throwsLeft
-      };
-    }
-    return { turn: 0, throwsLeft: 3 };
+  public get turn(): number {
+    return this.$store.state.game.turn;
+  }
+
+  /**
+   * Throws left in the current turn
+   *
+   * @memberof DartsMixin
+   */
+  public get throwsLeft(): number {
+    return this.$store.state.game.throwsLeft;
+  }
+
+  /**
+   * Score multiplier
+   *
+   * @memberof DartsMixin
+   */
+  public get multiplier(): number {
+    return this.$store.state.game.multiplier;
   }
 
   /**
@@ -150,14 +120,14 @@ export class DartsMixin extends mixins(PlayersMixin) {
   /**
    * Triggers a multiplier
    *
-   * @param {number} modifier
+   * @param {number} multiplier
    * @memberof DartsMixin
    */
-  public triggerMultiplier(modifier: number): void {
-    if (this.multiplier === modifier) {
-      this.multiplier = 1;
+  public triggerMultiplier(multiplier: number): void {
+    if (this.multiplier === multiplier) {
+      this.$store.commit("game/setMultiplier", 1);
     } else {
-      this.multiplier = modifier;
+      this.$store.commit("game/setMultiplier", multiplier);
     }
   }
 
@@ -171,9 +141,7 @@ export class DartsMixin extends mixins(PlayersMixin) {
   public isClosed(button: Button): boolean {
     return (
       !button.alwaysNegative &&
-      this.players.every(
-        player => player.state[button.score] === this.clicksToOpen
-      )
+      this.players.every(player => this.hasPlayerClosed(player, button.score))
     );
   }
 
@@ -211,9 +179,33 @@ export class DartsMixin extends mixins(PlayersMixin) {
    * @memberof DartsMixin
    */
   private hasPlayerClosedAll(player: Player): boolean {
-    return this.scorable.every(
-      score => player.state[score] === this.clicksToOpen
-    );
+    return this.scorable.every(score => this.hasPlayerClosed(player, score));
+  }
+
+  /**
+   * Checks if player has closed a field
+   *
+   * @private
+   * @param {Player} player
+   * @param {number} score
+   * @returns {boolean}
+   * @memberof DartsMixin
+   */
+  private hasPlayerClosed(player: Player, score: number): boolean {
+    return this.playerState(player, score) === this.clicksToOpen;
+  }
+
+  /**
+   * Players state for given score
+   *
+   * @private
+   * @param {Player} player
+   * @param {number} score
+   * @returns {number}
+   * @memberof DartsMixin
+   */
+  protected playerState(player: Player, score: number): number {
+    return player.state[score] || 0;
   }
 
   /**
@@ -224,8 +216,7 @@ export class DartsMixin extends mixins(PlayersMixin) {
    */
   public throwAction(button: Button): void {
     this.saveHistory();
-    const player = this.players[this.turn];
-    this.score(player, button);
+    this.score(this.players[this.turn], button);
     this.endThrow();
   }
 
@@ -258,13 +249,7 @@ export class DartsMixin extends mixins(PlayersMixin) {
    * @memberof DartsMixin
    */
   public endThrow(): void {
-    this.multiplier = 1;
-    this.throwsLeft--;
-    if (this.throwsLeft === 0) {
-      this.throwsLeft = 3;
-      this.turn = (this.turn + 1) % this.players.length;
-    }
-    this.saveState();
+    this.$store.commit("game/throw");
   }
 
   /**
@@ -273,32 +258,7 @@ export class DartsMixin extends mixins(PlayersMixin) {
    * @memberof DartsMixin
    */
   public saveHistory(): void {
-    this.history.push(JSON.parse(JSON.stringify(this.getState())));
-    localStorage.setItem("history", JSON.stringify(this.history));
-  }
-
-  /**
-   * Saves current state of the game
-   *
-   * @memberof DartsMixin
-   */
-  public saveState(): void {
-    localStorage.setItem("game", JSON.stringify(this.getState()));
-  }
-
-  /**
-   * Creates state object
-   *
-   * @private
-   * @returns
-   * @memberof DartsMixin
-   */
-  private getState() {
-    return {
-      players: this.players,
-      turn: this.turn,
-      throwsLeft: this.throwsLeft
-    };
+    this.$store.commit("game/saveHistory");
   }
 
   /**
@@ -311,11 +271,7 @@ export class DartsMixin extends mixins(PlayersMixin) {
       !!this.winner() ||
       confirm("Are you sure you want to reset the game progress?")
     ) {
-      localStorage.removeItem("game");
-      this.players.forEach(player =>
-        this.$store.commit("players/update", { ...player, score: 0, state: {} })
-      );
-      this.throwsLeft = 3;
+      this.$store.commit("game/reset");
     }
   }
 
@@ -325,14 +281,6 @@ export class DartsMixin extends mixins(PlayersMixin) {
    * @memberof DartsMixin
    */
   public undo(): void {
-    if (this.history.length) {
-      const state = this.history.pop();
-      state.players.forEach((player: Player) =>
-        this.$store.commit("players/update", player)
-      );
-      this.turn = state.turn;
-      this.throwsLeft = state.throwsLeft;
-      this.saveState();
-    }
+    this.$store.commit("game/undo");
   }
 }

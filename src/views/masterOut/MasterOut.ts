@@ -99,20 +99,10 @@ export class MasterOut extends mixins(DartsMixin) {
       ...player,
       state: { ...player.state, [score]: newState }
     });
-    this.multiplier = clicksAfterUpdate - this.clicksToOpen;
-  }
-
-  /**
-   * Players state for given score
-   *
-   * @private
-   * @param {Player} player
-   * @param {number} score
-   * @returns {number}
-   * @memberof MasterOut
-   */
-  private playerState(player: Player, score: number): number {
-    return player.state[score] || 0;
+    this.$store.commit(
+      "game/setMultiplier",
+      clicksAfterUpdate - this.clicksToOpen
+    );
   }
 
   /**
