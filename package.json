@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "webpack --mode development",
+    "build:production": "webpack --mode production",
     "watch": "webpack --mode development --watch true",
     "debug": "webpack-dev-server"
   },
