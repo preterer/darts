@@ -9,11 +9,12 @@ import { store } from "../store";
 export const game: Module<GameWithHistory, any> = {
   namespaced: true,
 
-  state: {
-    multiplier: 1,
-    turn: 0,
-    throwsLeft: 3,
-    history: []
+  state(): GameWithHistory {
+    const savedGame = localStorage.getItem(GAME_KEY);
+    if (savedGame) {
+      return JSON.parse(savedGame);
+    }
+    return defaultGame();
   },
 
   mutations: {
@@ -39,7 +40,7 @@ export const game: Module<GameWithHistory, any> = {
         state.throwsLeft--;
       }
       state.multiplier = 1;
-      localStorage.setItem(GAME_KEY, JSON.stringify(state));
+      save(state);
     },
 
     undo(state): void {
@@ -51,7 +52,7 @@ export const game: Module<GameWithHistory, any> = {
         historicalState.players.forEach(player =>
           store.commit("players/update", player)
         );
-        localStorage.setItem(GAME_KEY, JSON.stringify(state));
+        save(state);
       }
     },
 
@@ -66,3 +67,21 @@ export const game: Module<GameWithHistory, any> = {
     }
   }
 };
+
+function defaultGame(): GameWithHistory {
+  return {
+    multiplier: 1,
+    turn: 0,
+    throwsLeft: 3,
+    history: []
+  };
+}
+
+/**
+ * Saves game to localstorage
+ *
+ * @param {GameWithHistory} game
+ */
+function save(game: GameWithHistory): void {
+  localStorage.setItem(GAME_KEY, JSON.stringify(game));
+}
