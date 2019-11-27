@@ -68,7 +68,7 @@ function getPlayers(): Player[] {
  * @returns {(Player[] | void)}
  */
 function getStoredPlayers(): Player[] | void {
-  const storedPlayers = localStorage.getItem("players");
+  const storedPlayers = localStorage.getItem(PLAYERS_KEY);
   if (storedPlayers) {
     return JSON.parse(storedPlayers);
   }

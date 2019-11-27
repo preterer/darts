@@ -45,7 +45,7 @@ export class MasterOut extends mixins(DartsMixin) {
     if (this.scorable.includes(button.score) && !button.alwaysNegative) {
       this.scoreScorable(player, button);
     } else {
-      this.appendPlayerScore(player, button);
+      this.appendPlayerScore(player, button.score);
     }
   }
 
@@ -59,13 +59,10 @@ export class MasterOut extends mixins(DartsMixin) {
    * @memberof MasterOut
    */
   private scoreScorable(player: Player, button: Button): void {
-    const isClosed = this.players
-      .map(player => player.state)
-      .every(state => state[button.score] === this.clicksToOpen);
-    if (isClosed) {
-      return this.appendPlayerScore(player, button);
+    if (this.isClosed(button)) {
+      return this.appendPlayerScore(player, button.score);
     }
-    this.scoreNotClosed(player, button);
+    this.scoreNotClosed(player, button.score);
   }
 
   /**
@@ -76,18 +73,14 @@ export class MasterOut extends mixins(DartsMixin) {
    * @param {Button} button
    * @memberof MasterOut
    */
-  private scoreNotClosed(currentPlayer: Player, button: Button) {
-    const currentPlayerState = currentPlayer.state;
-
-    if (currentPlayerState[button.score] !== this.clicksToOpen) {
-      this.updatePlayerState(currentPlayerState, button);
+  private scoreNotClosed(currentPlayer: Player, score: number): void {
+    if (this.playerState(currentPlayer, score) !== this.clicksToOpen) {
+      this.updatePlayerState(currentPlayer, score);
     }
 
-    if (
-      currentPlayerState[button.score] === this.clicksToOpen &&
-      this.multiplier
-    ) {
-      this.addOtherPlayersScore(button);
+    const currentState = this.playerState(currentPlayer, score);
+    if (currentState === this.clicksToOpen && this.multiplier) {
+      this.addOtherPlayersScore(score);
     }
   }
 
@@ -99,19 +92,27 @@ export class MasterOut extends mixins(DartsMixin) {
    * @param {Button} button
    * @memberof MasterOut
    */
-  private updatePlayerState(currentPlayerState: any, button: Button) {
-    const clicksAfterUpdate =
-      (currentPlayerState[button.score] || 0) + this.multiplier;
-
-    this.$set(
-      currentPlayerState,
-      button.score,
-      clicksAfterUpdate > this.clicksToOpen
-        ? this.clicksToOpen
-        : clicksAfterUpdate
-    );
-
+  private updatePlayerState(player: Player, score: number): void {
+    const clicksAfterUpdate = this.playerState(player, score) + this.multiplier;
+    const newState = Math.min(clicksAfterUpdate, this.clicksToOpen);
+    this.$store.commit("players/update", {
+      ...player,
+      state: { ...player.state, [score]: newState }
+    });
     this.multiplier = clicksAfterUpdate - this.clicksToOpen;
+  }
+
+  /**
+   * Players state for given score
+   *
+   * @private
+   * @param {Player} player
+   * @param {number} score
+   * @returns {number}
+   * @memberof MasterOut
+   */
+  private playerState(player: Player, score: number): number {
+    return player.state[score] || 0;
   }
 
   /**
@@ -121,9 +122,9 @@ export class MasterOut extends mixins(DartsMixin) {
    * @param {Button} button
    * @memberof MasterOut
    */
-  private addOtherPlayersScore(button: Button) {
+  private addOtherPlayersScore(score: number): void {
     this.players
-      .filter(player => player.state[button.score] !== this.clicksToOpen)
-      .forEach(player => this.appendPlayerScore(player, button));
+      .filter(player => this.playerState(player, score) !== this.clicksToOpen)
+      .forEach(player => this.appendPlayerScore(player, score));
   }
 }

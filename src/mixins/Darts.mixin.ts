@@ -148,6 +148,20 @@ export class DartsMixin extends mixins(PlayersMixin) {
   }
 
   /**
+   * Triggers a multiplier
+   *
+   * @param {number} modifier
+   * @memberof DartsMixin
+   */
+  public triggerMultiplier(modifier: number): void {
+    if (this.multiplier === modifier) {
+      this.multiplier = 1;
+    } else {
+      this.multiplier = modifier;
+    }
+  }
+
+  /**
    * Is button closed
    *
    * @param {Button} button
@@ -223,21 +237,7 @@ export class DartsMixin extends mixins(PlayersMixin) {
    * @memberof DartsMixin
    */
   public score(player: Player, button: Button): void {
-    this.appendPlayerScore(player, button);
-  }
-
-  /**
-   * Triggers a multiplier
-   *
-   * @param {number} modifier
-   * @memberof DartsMixin
-   */
-  public triggerMultiplier(modifier: number) {
-    if (this.multiplier === modifier) {
-      this.multiplier = 1;
-    } else {
-      this.multiplier = modifier;
-    }
+    this.appendPlayerScore(player, button.score);
   }
 
   /**
@@ -247,8 +247,9 @@ export class DartsMixin extends mixins(PlayersMixin) {
    * @param {Button} button
    * @memberof DartsMixin
    */
-  public appendPlayerScore(player: Player, button: Button): void {
-    player.score += button.score * this.multiplier;
+  public appendPlayerScore(player: Player, appendedScore: number): void {
+    const score = player.score + appendedScore * this.multiplier;
+    this.$store.commit("players/update", { ...player, score });
   }
 
   /**
@@ -256,7 +257,7 @@ export class DartsMixin extends mixins(PlayersMixin) {
    *
    * @memberof DartsMixin
    */
-  public endThrow() {
+  public endThrow(): void {
     this.multiplier = 1;
     this.throwsLeft--;
     if (this.throwsLeft === 0) {
@@ -271,7 +272,7 @@ export class DartsMixin extends mixins(PlayersMixin) {
    *
    * @memberof DartsMixin
    */
-  public saveHistory() {
+  public saveHistory(): void {
     this.history.push(JSON.parse(JSON.stringify(this.getState())));
     localStorage.setItem("history", JSON.stringify(this.history));
   }
@@ -281,7 +282,7 @@ export class DartsMixin extends mixins(PlayersMixin) {
    *
    * @memberof DartsMixin
    */
-  public saveState() {
+  public saveState(): void {
     localStorage.setItem("game", JSON.stringify(this.getState()));
   }
 
@@ -305,13 +306,16 @@ export class DartsMixin extends mixins(PlayersMixin) {
    *
    * @memberof DartsMixin
    */
-  public reset() {
+  public reset(): void {
     if (
       !!this.winner() ||
       confirm("Are you sure you want to reset the game progress?")
     ) {
       localStorage.removeItem("game");
-      location.reload();
+      this.players.forEach(player =>
+        this.$store.commit("players/update", { ...player, score: 0, state: {} })
+      );
+      this.throwsLeft = 3;
     }
   }
 
@@ -320,11 +324,12 @@ export class DartsMixin extends mixins(PlayersMixin) {
    *
    * @memberof DartsMixin
    */
-  public undo() {
+  public undo(): void {
     if (this.history.length) {
       const state = this.history.pop();
-      this.$set(this, "players", state.players);
-      // this.players = state.players;
+      state.players.forEach((player: Player) =>
+        this.$store.commit("players/update", player)
+      );
       this.turn = state.turn;
       this.throwsLeft = state.throwsLeft;
       this.saveState();
