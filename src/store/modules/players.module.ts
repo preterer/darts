@@ -14,37 +14,19 @@ export const players: Module<{ list: Player[] }, any> = {
     add(state, player: Player): void {
       player.id = Date.now();
       state.list.push(player);
+      save(state.list);
     },
 
     remove(state, id: number): void {
       const index = state.list.findIndex(player => player.id === id);
       state.list.splice(index, 1);
+      save(state.list);
     },
 
     update(state, player: Player): void {
       const index = state.list.findIndex(p => p.id === player.id);
       state.list.splice(index, 1, player);
-    },
-
-    save(state): void {
-      localStorage.setItem(PLAYERS_KEY, JSON.stringify(state.list));
-    }
-  },
-
-  actions: {
-    add(context, player: Player): void {
-      context.commit("add", player);
-      context.commit("save");
-    },
-
-    remove(context, id: number): void {
-      context.commit("remove", id);
-      context.commit("save");
-    },
-
-    update(context, player: Player): void {
-      context.commit("update", player);
-      context.commit("save");
+      save(state.list);
     }
   }
 };
@@ -84,4 +66,13 @@ function getDefaultPlayers(): Player[] {
     { id: 1, name: "Player 1", score: 0, state: {} },
     { id: 2, name: "Player 2", score: 0, state: {} }
   ];
+}
+
+/**
+ * Saves players to localstorage
+ *
+ * @param {Player[]} list
+ */
+function save(list: Player[]): void {
+  localStorage.setItem(PLAYERS_KEY, JSON.stringify(list));
 }

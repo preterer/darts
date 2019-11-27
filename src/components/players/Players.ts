@@ -12,7 +12,7 @@ export class Players extends mixins(PlayersMixin) {
    * @memberof Players
    */
   public addPlayer(): void {
-    this.$store.dispatch("players/add", {
+    this.$store.commit("players/add", {
       name: `Player ${this.players.length + 1}`,
       score: 0,
       state: {}
@@ -26,7 +26,7 @@ export class Players extends mixins(PlayersMixin) {
    * @memberof Players
    */
   public removePlayer(id: number): void {
-    this.$store.dispatch("players/remove", id);
+    this.$store.commit("players/remove", id);
   }
 
   /**
@@ -36,6 +36,6 @@ export class Players extends mixins(PlayersMixin) {
    * @memberof Players
    */
   public updatePlayer(player: Player): void {
-    this.$store.dispatch("players/update", player);
+    this.$store.commit("players/update", player);
   }
 }
