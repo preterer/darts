@@ -66,8 +66,8 @@ export class ScoreButtons extends mixins(PlayersMixin) {
    * @memberof ScoreButtons
    */
   public isClosed(button: Button): boolean {
-    if (store.state.game.service.isClosed) {
-      return store.state.game.service.isClosed(button);
+    if (store.state.calculation.service.isClosed) {
+      return store.state.calculation.service.isClosed(button);
     }
     return false;
   }

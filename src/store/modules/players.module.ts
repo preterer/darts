@@ -16,7 +16,9 @@ export const players: Module<{ list: Player[] }, any> = {
     },
 
     winner(state, _, rootState): Player | undefined {
-      return state.list.find(player => rootState.game.service.isWinner(player));
+      return state.list.find(player =>
+        rootState.calculation.service.isWinner(player)
+      );
     }
   },
 

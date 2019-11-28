@@ -4,12 +4,8 @@ import { Button } from "#/interfaces/button";
 import { GameWithHistory } from "#/interfaces/gameWithHistory";
 import { GameWithPlayers } from "#/interfaces/gameWithPlayers";
 import { Player } from "#/interfaces/player";
-import { DartsService } from "../../services/darts.service";
-import { MasterOutService } from "../../services/masterOut.service";
 import { GAME_KEY } from "../../utils/constants";
 import { store } from "../store";
-
-const service = new MasterOutService();
 
 export const game: Module<GameWithHistory, any> = {
   namespaced: true,
@@ -17,9 +13,9 @@ export const game: Module<GameWithHistory, any> = {
   state(): GameWithHistory {
     const savedGame = localStorage.getItem(GAME_KEY);
     if (savedGame) {
-      return { ...JSON.parse(savedGame), service };
+      return JSON.parse(savedGame);
     }
-    return { ...defaultGame(), service } as any;
+    return defaultGame();
   },
 
   mutations: {
@@ -50,7 +46,7 @@ export const game: Module<GameWithHistory, any> = {
 
     throw(state, button: Button): void {
       store.commit("game/saveHistory");
-      service.score(button);
+      store.state.calculation.service.score(button);
       store.commit("game/endThrow");
     },
 

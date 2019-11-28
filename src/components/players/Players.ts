@@ -4,6 +4,13 @@ import { Player } from "#/interfaces/player";
 import { PlayersMixin } from "../../mixins/Players.mixin";
 import template from "./Players.html";
 
+/**
+ * Players management component
+ *
+ * @export
+ * @class Players
+ * @extends {mixins(PlayersMixin)}
+ */
 @Component({ name: "Players", template })
 export class Players extends mixins(PlayersMixin) {
   /**

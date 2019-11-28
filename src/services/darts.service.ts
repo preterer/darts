@@ -2,6 +2,12 @@ import { Button } from "#/interfaces/button";
 import { Player } from "#/interfaces/player";
 import { store } from "../store/store";
 
+/**
+ * Classic darts score calculation service
+ *
+ * @export
+ * @class DartsService
+ */
 export class DartsService {
   /**
    * Current multiplier
@@ -57,6 +63,17 @@ export class DartsService {
    * @memberof DartsService
    */
   public isWinner(player: Player): boolean {
+    return false;
+  }
+
+  /**
+   * Is button closed
+   *
+   * @param {Button} button
+   * @returns {boolean}
+   * @memberof DartsService
+   */
+  public isClosed(button: Button): boolean {
     return false;
   }
 }

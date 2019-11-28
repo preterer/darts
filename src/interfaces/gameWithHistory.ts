@@ -2,7 +2,7 @@ import { Game } from "./game";
 import { GameWithPlayers } from "./gameWithPlayers";
 
 /**
- * Game of darts state with history
+ * State of darts game with history
  *
  * @export
  * @interface GameWithHistory

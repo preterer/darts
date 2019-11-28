@@ -3,6 +3,13 @@ import { Player } from "#/interfaces/player";
 import { store } from "../store/store";
 import { DartsService } from "./darts.service";
 
+/**
+ * MasterOut darts calculation service
+ *
+ * @export
+ * @class MasterOutService
+ * @extends {DartsService}
+ */
 export class MasterOutService extends DartsService {
   /**
    * Scorable fields

@@ -4,6 +4,13 @@ import { Mixins } from "vue-property-decorator";
 import { PlayersMixin } from "../../mixins/Players.mixin";
 import template from "./ActionButtons.html";
 
+/**
+ * Action buttons component
+ *
+ * @export
+ * @class ActionButtons
+ * @extends {Mixins(PlayersMixin)}
+ */
 @Component({ name: "ActionButtons", template })
 export class ActionButtons extends Mixins(PlayersMixin) {
   /**
