@@ -15,15 +15,7 @@
     <div class="card-body">
       <Modifiers />
 
-      <btn
-        v-for="(button, index) in buttons"
-        :key="'button_' + index"
-        :class="button.class + (isClosed(button) ? ' btn-warning' : '')"
-        :disabled="!!winner"
-        :text="button.text"
-        class="btn btn-primary mb-2"
-        @click="throwAction(button)"
-      />
+      <ScoreButtons :missButton="missButton" />
 
       <Scoreboard :numbers="scorable" />
 

@@ -2,7 +2,6 @@ import Component, { mixins } from "vue-class-component";
 
 import { Button } from "#/interfaces/button";
 import { GameWithPlayers } from "#/interfaces/gameWithPlayers";
-import { Modifier } from "#/interfaces/modifier";
 import { Player } from "#/interfaces/player";
 import { PlayersMixin } from "./Players.mixin";
 
@@ -22,14 +21,6 @@ export class DartsMixin extends mixins(PlayersMixin)
    * @memberof DartsMixin
    */
   public scorable = [15, 16, 17, 18, 19, 20, 25];
-
-  /**
-   * Buttons list
-   *
-   * @type {Button[]}
-   * @memberof DartsMixin
-   */
-  public buttons: Button[] = this.getButtons();
 
   /**
    * Clicks required to open a field
@@ -93,39 +84,6 @@ export class DartsMixin extends mixins(PlayersMixin)
       player =>
         this.hasPlayerClosedAll(player) && this.hasPlayerLowestScore(player)
     );
-  }
-
-  /**
-   * Creates score buttons
-   *
-   * @private
-   * @returns {Button[]}
-   * @memberof DartsMixin
-   */
-  private getButtons(): Button[] {
-    const buttons: Button[] = new Array(20).fill(0).map((_, index) => ({
-      text: index + 1,
-      score: index + 1,
-      class: "btn-20"
-    }));
-    buttons.push({ text: "Bulls eye!", score: 25, class: "btn-100" });
-    buttons.push(this.getMissButton());
-    return buttons;
-  }
-
-  /**
-   * Creates a miss button (different behaviour in different game modes)
-   *
-   * @returns {Button}
-   * @memberof DartsMixin
-   */
-  public getMissButton(): Button {
-    return {
-      text: "Miss!",
-      score: 0,
-      class: "btn-100 btn-danger",
-      alwaysNegative: true
-    };
   }
 
   /**
