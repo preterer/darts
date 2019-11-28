@@ -13,16 +13,7 @@
     />
 
     <div class="card-body">
-      <div>
-        <btn
-          v-for="(modifier, index) in modifiers"
-          :key="'modifier_' + index"
-          class="btn mb-2"
-          :class="multiplier === modifier.modifier ? modifier.activeClass : modifier.class"
-          :text="modifier.text"
-          @click="triggerMultiplier(modifier.modifier)"
-        />
-      </div>
+      <Modifiers />
 
       <btn
         v-for="(button, index) in buttons"

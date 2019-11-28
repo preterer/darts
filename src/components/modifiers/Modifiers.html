@@ -1,0 +1,10 @@
+<div class="multipliers">
+  <btn
+    v-for="(modifier, index) in modifiers"
+    :key="'modifier_' + index"
+    class="btn mb-2"
+    :class="multiplier === modifier.modifier ? modifier.activeClass : modifier.class"
+    :text="modifier.text"
+    @click="triggerMultiplier(modifier.modifier)"
+  />
+</div>

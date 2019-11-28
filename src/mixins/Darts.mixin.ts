@@ -39,27 +39,6 @@ export class DartsMixin extends mixins(PlayersMixin)
   public clicksToOpen = 3;
 
   /**
-   * List of modifiers
-   *
-   * @type {Modifier[]}
-   * @memberof DartsMixin
-   */
-  public modifiers: Modifier[] = [
-    {
-      modifier: 2,
-      text: "Double!",
-      class: "btn-outline-info btn-50",
-      activeClass: "btn-info btn-50"
-    },
-    {
-      modifier: 3,
-      text: "Tripple!",
-      class: "btn-outline-warning btn-50",
-      activeClass: "btn-warning btn-50"
-    }
-  ];
-
-  /**
    * Which player's turn is it
    *
    * @readonly
@@ -147,16 +126,6 @@ export class DartsMixin extends mixins(PlayersMixin)
       class: "btn-100 btn-danger",
       alwaysNegative: true
     };
-  }
-
-  /**
-   * Triggers a multiplier
-   *
-   * @param {number} multiplier
-   * @memberof DartsMixin
-   */
-  public triggerMultiplier(multiplier: number): void {
-    this.$store.commit("game/setMultiplier", multiplier);
   }
 
   /**
