@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 
-import { routes } from "../../routes/router";
+import { routes } from "../../router/router";
 import template from "./GameModes.html";
 
 /**

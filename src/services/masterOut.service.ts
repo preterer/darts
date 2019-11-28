@@ -16,7 +16,7 @@ export class MasterOutService extends DartsService {
    *
    * @memberof MasterOutService
    */
-  public scorable = [15, 16, 17, 18, 19, 20, 25];
+  public scorable: number[] = [15, 16, 17, 18, 19, 20, 25];
 
   /**
    * Clicks required to open a field
@@ -24,6 +24,19 @@ export class MasterOutService extends DartsService {
    * @memberof MasterOutService
    */
   public clicksToOpen = 3;
+
+  constructor(scorableAmount: number = 6) {
+    super();
+    if (scorableAmount > 20) {
+      throw new Error("Scorable amount cannot be higher than 20");
+    }
+
+    const firstScorableNumber = 21 - scorableAmount;
+    this.scorable = new Array(scorableAmount)
+      .fill(0)
+      .map((_, index) => firstScorableNumber + index);
+    this.scorable.push(25);
+  }
 
   /**
    * Players list
