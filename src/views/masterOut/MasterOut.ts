@@ -3,6 +3,7 @@ import Component, { mixins } from "vue-class-component";
 import { Button } from "#/interfaces/button";
 import { GameWithPlayers } from "#/interfaces/gameWithPlayers";
 import { Player } from "#/interfaces/player";
+import { ActionButtons } from "../../components/actionButtons/ActionButtons";
 import { GameData } from "../../components/gameData/GameData";
 import { Scoreboard } from "../../components/scoreboard/Scoreboard";
 import { DartsMixin } from "../../mixins/Darts.mixin";
@@ -18,7 +19,7 @@ import template from "./MasterOut.html";
 @Component({
   name: "MasterOut",
   template,
-  components: { GameData, Scoreboard }
+  components: { ActionButtons, GameData, Scoreboard }
 })
 export class MasterOut extends mixins(DartsMixin) implements GameWithPlayers {
   /**

@@ -239,29 +239,6 @@ export class DartsMixin extends mixins(PlayersMixin)
   }
 
   /**
-   * Resets state of the game
-   *
-   * @memberof DartsMixin
-   */
-  public reset(): void {
-    if (
-      !!this.winner ||
-      confirm("Are you sure you want to reset the game progress?")
-    ) {
-      this.$store.commit("game/reset");
-    }
-  }
-
-  /**
-   * Undos last throw
-   *
-   * @memberof DartsMixin
-   */
-  public undo(): void {
-    this.$store.commit("game/undo");
-  }
-
-  /**
    * Checks if player has the lowest score
    *
    * @private
