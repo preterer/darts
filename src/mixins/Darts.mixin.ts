@@ -93,6 +93,17 @@ export class DartsMixin extends mixins(PlayersMixin)
   }
 
   /**
+   * Current player
+   *
+   * @readonly
+   * @type {Player}
+   * @memberof DartsMixin
+   */
+  public get currentPlayer(): Player {
+    return this.players[this.turn];
+  }
+
+  /**
    * Creates score buttons
    *
    * @private
@@ -183,19 +194,18 @@ export class DartsMixin extends mixins(PlayersMixin)
    */
   public throwAction(button: Button): void {
     this.saveHistory();
-    this.score(this.players[this.turn], button);
+    this.score(button);
     this.endThrow();
   }
 
   /**
    * Scores a player throw
    *
-   * @param {Player} player
    * @param {Button} button
    * @memberof DartsMixin
    */
-  public score(player: Player, button: Button): void {
-    this.appendPlayerScore(player, button.score);
+  public score(button: Button): void {
+    this.appendPlayerScore(this.currentPlayer, button.score);
   }
 
   /**

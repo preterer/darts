@@ -39,15 +39,14 @@ export class MasterOut extends mixins(DartsMixin) implements GameWithPlayers {
   /**
    * Scores a throw
    *
-   * @param {Player} player
    * @param {Button} button
    * @memberof MasterOut
    */
-  public score(player: Player, button: Button): void {
+  public score(button: Button): void {
     if (this.scorable.includes(button.score) && !button.alwaysNegative) {
-      this.scoreScorable(player, button);
+      this.scoreScorable(button);
     } else {
-      this.appendPlayerScore(player, button.score);
+      this.appendPlayerScore(this.currentPlayer, button.score);
     }
   }
 
@@ -55,32 +54,30 @@ export class MasterOut extends mixins(DartsMixin) implements GameWithPlayers {
    * Scores a scorable field hit
    *
    * @private
-   * @param {Player} player
    * @param {Button} button
    * @returns {void}
    * @memberof MasterOut
    */
-  private scoreScorable(player: Player, button: Button): void {
+  private scoreScorable(button: Button): void {
     if (this.isClosed(button)) {
-      return this.appendPlayerScore(player, button.score);
+      return this.appendPlayerScore(this.currentPlayer, button.score);
     }
-    this.scoreNotClosed(player, button.score);
+    this.scoreNotClosed(button.score);
   }
 
   /**
    * Scores a field that is not closed yet
    *
    * @private
-   * @param {Player} currentPlayer
    * @param {number} score
    * @memberof MasterOut
    */
-  private scoreNotClosed(currentPlayer: Player, score: number): void {
-    if (this.playerState(currentPlayer, score) !== this.clicksToOpen) {
-      this.updateStateAndMultiplier(currentPlayer, score);
+  private scoreNotClosed(score: number): void {
+    if (this.playerState(this.currentPlayer, score) !== this.clicksToOpen) {
+      this.updateStateAndMultiplier(score);
     }
 
-    const currentState = this.playerState(currentPlayer, score);
+    const currentState = this.playerState(this.currentPlayer, score);
     if (currentState === this.clicksToOpen && this.multiplier) {
       this.addOtherPlayersScore(score);
     }
@@ -90,16 +87,15 @@ export class MasterOut extends mixins(DartsMixin) implements GameWithPlayers {
    * Updates player state and multiplier for scoring calculations
    *
    * @private
-   * @param {Player} player
    * @param {number} score
    * @memberof MasterOut
    */
-  private updateStateAndMultiplier(player: Player, score: number): void {
-    const clicksBeforeUpdate = this.playerState(player, score);
+  private updateStateAndMultiplier(score: number): void {
+    const clicksBeforeUpdate = this.playerState(this.currentPlayer, score);
     const clicksAfterUpdate = clicksBeforeUpdate + this.multiplier;
     const newMultiplier = clicksAfterUpdate - this.clicksToOpen;
     if (clicksBeforeUpdate !== this.clicksToOpen) {
-      this.updateState(player, clicksAfterUpdate, score);
+      this.updateState(this.currentPlayer, clicksAfterUpdate, score);
     }
     this.$store.commit("game/setMultiplier", newMultiplier);
   }
