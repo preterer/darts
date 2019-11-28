@@ -7,7 +7,7 @@
     <h1 class="card-title text-center">MASTER OUT</h1>
 
     <GameData
-      :winner="winner()"
+      :winner="winner"
       :currentPlayer="players[turn]"
       :throwsLeft="throwsLeft"
     />
@@ -28,7 +28,7 @@
         v-for="(button, index) in buttons"
         :key="'button_' + index"
         :class="button.class + (isClosed(button) ? ' btn-warning' : '')"
-        :disabled="!!winner()"
+        :disabled="!!winner"
         :text="button.text"
         class="btn btn-primary mb-2"
         @click="throwAction(button)"

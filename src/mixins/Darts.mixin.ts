@@ -104,6 +104,19 @@ export class DartsMixin extends mixins(PlayersMixin)
   }
 
   /**
+   * Returns winner of the game if it's finished yet
+   *
+   * @returns {(Player | undefined)}
+   * @memberof DartsMixin
+   */
+  public get winner(): Player | undefined {
+    return this.players.find(
+      player =>
+        this.hasPlayerClosedAll(player) && this.hasPlayerLowestScore(player)
+    );
+  }
+
+  /**
    * Creates score buttons
    *
    * @private
@@ -157,19 +170,6 @@ export class DartsMixin extends mixins(PlayersMixin)
     return (
       !button.alwaysNegative &&
       this.players.every(player => this.hasPlayerClosed(player, button.score))
-    );
-  }
-
-  /**
-   * Returns winner of the game if it's finished yet
-   *
-   * @returns {(Player | undefined)}
-   * @memberof DartsMixin
-   */
-  public winner(): Player | undefined {
-    return this.players.find(
-      player =>
-        this.hasPlayerClosedAll(player) && this.hasPlayerLowestScore(player)
     );
   }
 
@@ -245,7 +245,7 @@ export class DartsMixin extends mixins(PlayersMixin)
    */
   public reset(): void {
     if (
-      !!this.winner() ||
+      !!this.winner ||
       confirm("Are you sure you want to reset the game progress?")
     ) {
       this.$store.commit("game/reset");
