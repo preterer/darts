@@ -76,4 +76,15 @@ export class DartsService {
   public isClosed(button: Button): boolean {
     return false;
   }
+
+  /**
+   * Is button open for current player
+   *
+   * @param {Button} button
+   * @returns {boolean}
+   * @memberof DartsService
+   */
+  public isOpen(button: Button): boolean {
+    return false;
+  }
 }

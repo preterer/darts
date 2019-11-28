@@ -99,8 +99,19 @@ export class MasterOutService extends DartsService {
   public isClosed(button: Button): boolean {
     return (
       !button.alwaysNegative &&
-      this.players.every(player => this.hasPlayerClosed(player, button.score))
+      this.players.every(player => this.hasPlayerOpened(player, button.score))
     );
+  }
+
+  /**
+   * Is button open for current player
+   *
+   * @param {Button} button
+   * @returns {boolean}
+   * @memberof MasterOutService
+   */
+  public isOpen(button: Button): boolean {
+    return this.hasPlayerOpened(this.currentPlayer, button.score);
   }
 
   /**
@@ -202,7 +213,7 @@ export class MasterOutService extends DartsService {
    * @memberof MasterOutService
    */
   private hasPlayerClosedAll(player: Player): boolean {
-    return this.scorable.every(score => this.hasPlayerClosed(player, score));
+    return this.scorable.every(score => this.hasPlayerOpened(player, score));
   }
 
   /**
@@ -214,7 +225,7 @@ export class MasterOutService extends DartsService {
    * @returns {boolean}
    * @memberof MasterOutService
    */
-  private hasPlayerClosed(player: Player, score: number): boolean {
+  private hasPlayerOpened(player: Player, score: number): boolean {
     return this.playerState(player, score) === this.clicksToOpen;
   }
 }

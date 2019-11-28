@@ -2,6 +2,7 @@ import Component, { mixins } from "vue-class-component";
 
 import { Button } from "#/interfaces/button";
 import { PlayersMixin } from "../../mixins/Players.mixin";
+import { DartsService } from "../../services/darts.service";
 import template from "./ScoreButtons.html";
 
 /**
@@ -44,6 +45,36 @@ export class ScoreButtons extends mixins(PlayersMixin) {
   }
 
   /**
+   * Currently used darts service
+   *
+   * @readonly
+   * @type {DartsService}
+   * @memberof ScoreButtons
+   */
+  public get service(): DartsService {
+    return this.$store.state.gameMode.service;
+  }
+
+  /**
+   * CSS classes of a button
+   *
+   * @param {Button} button
+   * @returns {(string | undefined)}
+   * @memberof ScoreButtons
+   */
+  public buttonClass(button: Button): string | undefined {
+    if (this.service.isClosed(button)) {
+      return button.class + " btn-warning";
+    }
+
+    if (this.service.isOpen(button)) {
+      return button.class + " btn-success";
+    }
+
+    return button.class;
+  }
+
+  /**
    * Creates score buttons
    *
    * @private
@@ -58,20 +89,6 @@ export class ScoreButtons extends mixins(PlayersMixin) {
     }));
     buttons.push({ text: "Bulls eye!", score: 25, class: "btn-100" });
     return buttons;
-  }
-
-  /**
-   * Is button closed
-   *
-   * @param {Button} button
-   * @returns {boolean}
-   * @memberof ScoreButtons
-   */
-  public isClosed(button: Button): boolean {
-    if (this.$store.state.gameMode.service.isClosed) {
-      return this.$store.state.gameMode.service.isClosed(button);
-    }
-    return false;
   }
 
   /**

@@ -2,7 +2,7 @@
   <btn
     v-for="(button, index) in buttons"
     :key="'button_' + index"
-    :class="button.class + (isClosed(button) ? ' btn-warning' : '')"
+    :class="buttonClass(button)"
     :disabled="!!winner"
     :text="button.text"
     class="btn btn-primary mb-2"
