@@ -1,9 +1,7 @@
 import Component, { mixins } from "vue-class-component";
-import { Prop } from "vue-property-decorator";
 
 import { Button } from "#/interfaces/button";
 import { PlayersMixin } from "../../mixins/Players.mixin";
-import { store } from "../../store/store";
 import template from "./ScoreButtons.html";
 
 /**
@@ -16,29 +14,34 @@ import template from "./ScoreButtons.html";
 @Component({ name: "ScoreButtons", template })
 export class ScoreButtons extends mixins(PlayersMixin) {
   /**
-   * Miss button
-   *
-   * @type {Button}
-   * @memberof ScoreButtons
-   */
-  @Prop({
-    type: Object,
-    default: () => ({
-      text: "Miss!",
-      score: 0,
-      class: "btn-100 btn-danger",
-      alwaysNegative: true
-    })
-  })
-  public missButton!: Button;
-
-  /**
-   * Buttons list
+   * Default buttons list
    *
    * @type {Button[]}
    * @memberof ScoreButtons
    */
-  public buttons: Button[] = this.getButtons();
+  private defaultButtons: Button[] = this.getButtons();
+
+  /**
+   * Miss button
+   *
+   * @readonly
+   * @type {Button}
+   * @memberof ScoreButtons
+   */
+  public get missButton(): Button {
+    return this.$store.state.gameMode.missButton;
+  }
+
+  /**
+   * Buttons list
+   *
+   * @readonly
+   * @type {Button[]}
+   * @memberof ScoreButtons
+   */
+  public get buttons(): Button[] {
+    return [...this.defaultButtons, this.missButton];
+  }
 
   /**
    * Creates score buttons
@@ -54,7 +57,6 @@ export class ScoreButtons extends mixins(PlayersMixin) {
       class: "btn-20"
     }));
     buttons.push({ text: "Bulls eye!", score: 25, class: "btn-100" });
-    buttons.push(this.missButton);
     return buttons;
   }
 
@@ -66,8 +68,8 @@ export class ScoreButtons extends mixins(PlayersMixin) {
    * @memberof ScoreButtons
    */
   public isClosed(button: Button): boolean {
-    if (this.$store.state.calculation.service.isClosed) {
-      return this.$store.state.calculation.service.isClosed(button);
+    if (this.$store.state.gameMode.service.isClosed) {
+      return this.$store.state.gameMode.service.isClosed(button);
     }
     return false;
   }

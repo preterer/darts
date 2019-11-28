@@ -46,7 +46,7 @@ export const game: Module<GameWithHistory, any> = {
 
     throw(state, button: Button): void {
       store.commit("game/saveHistory");
-      store.state.calculation.service.score(button);
+      store.state.gameMode.service.score(button);
       store.commit("game/endThrow");
     },
 

@@ -1,9 +1,10 @@
 import { Module } from "vuex";
 
 import { Player } from "#/interfaces/player";
+import { Players } from "#/interfaces/players";
 import { PLAYERS_KEY } from "../../utils/constants";
 
-export const players: Module<{ list: Player[] }, any> = {
+export const players: Module<Players, any> = {
   namespaced: true,
 
   state() {
@@ -17,7 +18,7 @@ export const players: Module<{ list: Player[] }, any> = {
 
     winner(state, _, rootState): Player | undefined {
       return state.list.find(player =>
-        rootState.calculation.service.isWinner(player)
+        rootState.gameMode.service.isWinner(player)
       );
     }
   },

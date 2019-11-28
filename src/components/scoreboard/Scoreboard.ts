@@ -25,6 +25,6 @@ export class Scoreboard extends mixins(PlayersMixin) {
    * @memberof Scoreboard
    */
   public get numbers(): number[] {
-    return this.$store.state.calculation.service.scorable || [];
+    return this.$store.state.gameMode.service.scorable || [];
   }
 }
