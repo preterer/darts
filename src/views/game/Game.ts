@@ -20,4 +20,15 @@ import template from "./Game.html";
   template,
   components: { ActionButtons, GameData, Modifiers, Scoreboard, ScoreButtons }
 })
-export class Game extends Vue {}
+export class Game extends Vue {
+  /**
+   * Game title
+   *
+   * @readonly
+   * @type {string}
+   * @memberof Game
+   */
+  public get title(): string {
+    return this.$route.meta.title;
+  }
+}

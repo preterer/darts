@@ -3,18 +3,16 @@ import { Module } from "vuex";
 import { Button } from "#/interfaces/button";
 import { GameMode } from "#/interfaces/gameMode";
 import { DartsService } from "../../services/darts.service";
+import { missButton } from "../../utils/missButton";
 
 export const gameMode: Module<GameMode, any> = {
   namespaced: true,
 
-  state: {
-    service: new DartsService(),
-    missButton: {
-      text: "Miss",
-      score: 0,
-      class: "btn-100 btn-danger",
-      alwaysNegative: false
-    }
+  state() {
+    return {
+      service: undefined as any,
+      missButton: missButton(0)
+    };
   },
 
   mutations: {

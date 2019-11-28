@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 
+import { routes } from "../../routes/router";
 import template from "./GameModes.html";
 
 /**
@@ -17,5 +18,7 @@ export class GameModes extends Vue {
    *
    * @memberof GameModes
    */
-  public modes = [{ name: "Master Out", route: { name: "masterOut" } }];
+  public modes = routes
+    .filter(route => route.meta && route.meta.game)
+    .map(route => ({ title: route.meta.title, route: { name: route.name } }));
 }
