@@ -1,10 +1,15 @@
 import { Module } from "vuex";
 
+import { Button } from "#/interfaces/button";
 import { GameWithHistory } from "#/interfaces/gameWithHistory";
 import { GameWithPlayers } from "#/interfaces/gameWithPlayers";
 import { Player } from "#/interfaces/player";
+import { DartsService } from "../../services/darts.service";
+import { MasterOutService } from "../../services/masterOut.service";
 import { GAME_KEY } from "../../utils/constants";
 import { store } from "../store";
+
+const service = new MasterOutService();
 
 export const game: Module<GameWithHistory, any> = {
   namespaced: true,
@@ -12,9 +17,9 @@ export const game: Module<GameWithHistory, any> = {
   state(): GameWithHistory {
     const savedGame = localStorage.getItem(GAME_KEY);
     if (savedGame) {
-      return JSON.parse(savedGame);
+      return { ...JSON.parse(savedGame), service };
     }
-    return defaultGame();
+    return { ...defaultGame(), service } as any;
   },
 
   mutations: {
@@ -32,7 +37,7 @@ export const game: Module<GameWithHistory, any> = {
       state.history.push(JSON.parse(JSON.stringify(currentState)));
     },
 
-    throw(state): void {
+    endThrow(state): void {
       if (state.throwsLeft === 1) {
         state.throwsLeft = 3;
         state.turn = (state.turn + 1) % store.state.players.list.length;
@@ -41,6 +46,12 @@ export const game: Module<GameWithHistory, any> = {
       }
       state.multiplier = 1;
       save(state);
+    },
+
+    throw(state, button: Button): void {
+      store.commit("game/saveHistory");
+      service.score(button);
+      store.commit("game/endThrow");
     },
 
     undo(state): void {

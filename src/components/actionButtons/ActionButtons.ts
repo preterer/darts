@@ -1,15 +1,15 @@
 import Component from "vue-class-component";
 
 import { Mixins } from "vue-property-decorator";
-import { DartsMixin } from "../../mixins/Darts.mixin";
+import { PlayersMixin } from "../../mixins/Players.mixin";
 import template from "./ActionButtons.html";
 
 @Component({ name: "ActionButtons", template })
-export class ActionButtons extends Mixins(DartsMixin) {
+export class ActionButtons extends Mixins(PlayersMixin) {
   /**
    * Resets state of the game
    *
-   * @memberof DartsMixin
+   * @memberof ActionButtons
    */
   public reset(): void {
     if (
@@ -23,7 +23,7 @@ export class ActionButtons extends Mixins(DartsMixin) {
   /**
    * Undos last throw
    *
-   * @memberof DartsMixin
+   * @memberof ActionButtons
    */
   public undo(): void {
     this.$store.commit("game/undo");

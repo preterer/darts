@@ -10,6 +10,16 @@ export const players: Module<{ list: Player[] }, any> = {
     return { list: getPlayers() };
   },
 
+  getters: {
+    current(state, _, rootState): Player {
+      return state.list[rootState.game.turn];
+    },
+
+    winner(state, _, rootState): Player | undefined {
+      return state.list.find(player => rootState.game.service.isWinner(player));
+    }
+  },
+
   mutations: {
     add(state, player: Player): void {
       player.id = Date.now();

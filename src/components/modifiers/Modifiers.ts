@@ -4,13 +4,20 @@ import Component from "vue-class-component";
 import { Modifier } from "#/interfaces/modifier";
 import template from "./Modifiers.html";
 
+/**
+ * Modifiers component
+ *
+ * @export
+ * @class Modifiers
+ * @extends {Vue}
+ */
 @Component({ name: "Modifiers", template })
 export class Modifiers extends Vue {
   /**
    * List of modifiers
    *
    * @type {Modifier[]}
-   * @memberof DartsMixin
+   * @memberof Modifiers
    */
   public modifiers: Modifier[] = [
     {
@@ -32,7 +39,7 @@ export class Modifiers extends Vue {
    *
    * @readonly
    * @type {number}
-   * @memberof DartsMixin
+   * @memberof Modifiers
    */
   public get multiplier(): number {
     return this.$store.state.game.multiplier;
@@ -42,7 +49,7 @@ export class Modifiers extends Vue {
    * Triggers a multiplier
    *
    * @param {number} multiplier
-   * @memberof DartsMixin
+   * @memberof Modifiers
    */
   public triggerMultiplier(multiplier: number): void {
     this.$store.commit("game/setMultiplier", multiplier);

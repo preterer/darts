@@ -2,11 +2,25 @@ import Component, { mixins } from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 
 import { Button } from "#/interfaces/button";
-import { DartsMixin } from "../../mixins/Darts.mixin";
+import { PlayersMixin } from "../../mixins/Players.mixin";
+import { store } from "../../store/store";
 import template from "./ScoreButtons.html";
 
+/**
+ * Score buttons component
+ *
+ * @export
+ * @class ScoreButtons
+ * @extends {mixins(PlayersMixin)}
+ */
 @Component({ name: "ScoreButtons", template })
-export class ScoreButtons extends mixins(DartsMixin) {
+export class ScoreButtons extends mixins(PlayersMixin) {
+  /**
+   * Miss button
+   *
+   * @type {Button}
+   * @memberof ScoreButtons
+   */
   @Prop({
     type: Object,
     default: () => ({
@@ -22,7 +36,7 @@ export class ScoreButtons extends mixins(DartsMixin) {
    * Buttons list
    *
    * @type {Button[]}
-   * @memberof DartsMixin
+   * @memberof ScoreButtons
    */
   public buttons: Button[] = this.getButtons();
 
@@ -31,7 +45,7 @@ export class ScoreButtons extends mixins(DartsMixin) {
    *
    * @private
    * @returns {Button[]}
-   * @memberof DartsMixin
+   * @memberof ScoreButtons
    */
   private getButtons(): Button[] {
     const buttons: Button[] = new Array(20).fill(0).map((_, index) => ({
@@ -42,5 +56,19 @@ export class ScoreButtons extends mixins(DartsMixin) {
     buttons.push({ text: "Bulls eye!", score: 25, class: "btn-100" });
     buttons.push(this.missButton);
     return buttons;
+  }
+
+  /**
+   * Is button closed
+   *
+   * @param {Button} button
+   * @returns {boolean}
+   * @memberof ScoreButtons
+   */
+  public isClosed(button: Button): boolean {
+    if (store.state.game.service.isClosed) {
+      return store.state.game.service.isClosed(button);
+    }
+    return false;
   }
 }

@@ -16,20 +16,6 @@ import { PlayersMixin } from "./Players.mixin";
 export class DartsMixin extends mixins(PlayersMixin)
   implements GameWithPlayers {
   /**
-   * Scorable fields
-   *
-   * @memberof DartsMixin
-   */
-  public scorable = [15, 16, 17, 18, 19, 20, 25];
-
-  /**
-   * Clicks required to open a field
-   *
-   * @memberof DartsMixin
-   */
-  public clicksToOpen = 3;
-
-  /**
    * Which player's turn is it
    *
    * @readonly
@@ -63,66 +49,13 @@ export class DartsMixin extends mixins(PlayersMixin)
   }
 
   /**
-   * Current player
-   *
-   * @readonly
-   * @type {Player}
-   * @memberof DartsMixin
-   */
-  public get currentPlayer(): Player {
-    return this.players[this.turn];
-  }
-
-  /**
-   * Returns winner of the game if it's finished yet
-   *
-   * @returns {(Player | undefined)}
-   * @memberof DartsMixin
-   */
-  public get winner(): Player | undefined {
-    return this.players.find(
-      player =>
-        this.hasPlayerClosedAll(player) && this.hasPlayerLowestScore(player)
-    );
-  }
-
-  /**
-   * Is button closed
-   *
-   * @param {Button} button
-   * @returns {boolean}
-   * @memberof DartsMixin
-   */
-  public isClosed(button: Button): boolean {
-    return (
-      !button.alwaysNegative &&
-      this.players.every(player => this.hasPlayerClosed(player, button.score))
-    );
-  }
-
-  /**
-   * Players state for given score
-   *
-   * @private
-   * @param {Player} player
-   * @param {number} score
-   * @returns {number}
-   * @memberof DartsMixin
-   */
-  public playerState(player: Player, score: number): number {
-    return player.state[score] || 0;
-  }
-
-  /**
    * Throw action
    *
    * @param {Button} button
    * @memberof DartsMixin
    */
   public throwAction(button: Button): void {
-    this.saveHistory();
-    this.score(button);
-    this.endThrow();
+    this.$store.commit("game/throw", button);
   }
 
   /**
@@ -153,7 +86,7 @@ export class DartsMixin extends mixins(PlayersMixin)
    * @memberof DartsMixin
    */
   public endThrow(): void {
-    this.$store.commit("game/throw");
+    this.$store.commit("game/endThrow");
   }
 
   /**
@@ -163,42 +96,5 @@ export class DartsMixin extends mixins(PlayersMixin)
    */
   public saveHistory(): void {
     this.$store.commit("game/saveHistory");
-  }
-
-  /**
-   * Checks if player has the lowest score
-   *
-   * @private
-   * @param {Player} player
-   * @returns {boolean}
-   * @memberof DartsMixin
-   */
-  private hasPlayerLowestScore(player: Player): boolean {
-    return this.players.every(p => p.score >= player.score);
-  }
-
-  /**
-   * Chcecks if player has closed all fields
-   *
-   * @private
-   * @param {Player} player
-   * @returns {boolean}
-   * @memberof DartsMixin
-   */
-  private hasPlayerClosedAll(player: Player): boolean {
-    return this.scorable.every(score => this.hasPlayerClosed(player, score));
-  }
-
-  /**
-   * Checks if player has closed a field
-   *
-   * @private
-   * @param {Player} player
-   * @param {number} score
-   * @returns {boolean}
-   * @memberof DartsMixin
-   */
-  private hasPlayerClosed(player: Player, score: number): boolean {
-    return this.playerState(player, score) === this.clicksToOpen;
   }
 }

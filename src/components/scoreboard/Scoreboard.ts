@@ -1,5 +1,4 @@
 import Component, { mixins } from "vue-class-component";
-import { Prop } from "vue-property-decorator";
 
 import { PlayersMixin } from "../../mixins/Players.mixin";
 import { ScoreboardHeader } from "./header/Header";
@@ -25,6 +24,7 @@ export class Scoreboard extends mixins(PlayersMixin) {
    * @type {number[]}
    * @memberof Scoreboard
    */
-  @Prop({ type: Array, required: false, default: () => [] })
-  public numbers!: number[];
+  public get numbers(): number[] {
+    return this.$store.state.game.service.scorable || [];
+  }
 }
