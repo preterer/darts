@@ -66,9 +66,19 @@ export class ScoreButtons extends mixins(PlayersMixin) {
    * @memberof ScoreButtons
    */
   public isClosed(button: Button): boolean {
-    if (store.state.calculation.service.isClosed) {
-      return store.state.calculation.service.isClosed(button);
+    if (this.$store.state.calculation.service.isClosed) {
+      return this.$store.state.calculation.service.isClosed(button);
     }
     return false;
+  }
+
+  /**
+   * Perform throw
+   *
+   * @param {Button} button
+   * @memberof ScoreButtons
+   */
+  public throwAction(button: Button): void {
+    this.$store.commit("game/throw", button);
   }
 }

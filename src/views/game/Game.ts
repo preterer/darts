@@ -8,7 +8,7 @@ import { Modifiers } from "../../components/modifiers/Modifiers";
 import { Scoreboard } from "../../components/scoreboard/Scoreboard";
 import { ScoreButtons } from "../../components/scoreButtons/ScoreButtons";
 import { DartsMixin } from "../../mixins/Darts.mixin";
-import template from "./MasterOut.html";
+import template from "./Game.html";
 
 /**
  * Master out game mode
@@ -22,7 +22,7 @@ import template from "./MasterOut.html";
   template,
   components: { ActionButtons, GameData, Modifiers, Scoreboard, ScoreButtons }
 })
-export class MasterOut extends mixins(DartsMixin) implements GameWithPlayers {
+export class Game extends mixins(DartsMixin) implements GameWithPlayers {
   /**
    * Miss button which always increases score by 25
    *
