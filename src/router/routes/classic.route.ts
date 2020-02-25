@@ -9,5 +9,5 @@ export const classicRoute: RouteConfig = gameRoute(
   "/classic",
   "Classic darts",
   new DartsService(),
-  missButton(25)
+  missButton(0)
 );
