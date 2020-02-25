@@ -56,7 +56,6 @@ body {
 }
 
 .darts-panel .dart-column {
-  /* width: calc((100% - 11em) / 7); */
   height: calc(30px + 1.5rem);
 }
 
