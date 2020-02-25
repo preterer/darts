@@ -2,6 +2,13 @@ import { Player } from "#/interfaces/player";
 import { store } from "../store/store";
 import { DartsService } from "./darts.service";
 
+/**
+ * Game of NPoints (ex. 301, 401)
+ *
+ * @export
+ * @class NPoints
+ * @extends {DartsService}
+ */
 export class NPoints extends DartsService {
   constructor(private pointsToGet: number) {
     super();
