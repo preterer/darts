@@ -56,7 +56,7 @@ body {
 }
 
 .darts-panel .dart-column {
-  width: calc((100% - 11em) / 7);
+  /* width: calc((100% - 11em) / 7); */
   height: calc(30px + 1.5rem);
 }
 
@@ -66,4 +66,9 @@ body {
 
 .darts-panel .score-column {
   width: 4em;
+}
+
+.darts-panel .table th,
+.darts-panel .table td {
+  padding: 5px;
 }
