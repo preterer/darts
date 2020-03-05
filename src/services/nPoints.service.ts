@@ -25,6 +25,10 @@ export class NPoints extends DartsService {
     const score = player.score + appendedScore * this.multiplier;
     if (score <= this.pointsToGet) {
       store.commit("players/update", { ...player, score });
+    } else {
+      store.commit("game/undoTurn");
+      store.commit("game/endThrow");
+      store.commit("game/endThrow");
     }
   }
 

@@ -7,6 +7,8 @@ import { Player } from "#/interfaces/player";
 import { GAME_KEY } from "../../utils/constants";
 import { store } from "../store";
 
+const THROWS_PER_TURN = 3;
+
 export const game: Module<GameWithHistory, any> = {
   namespaced: true,
 
@@ -35,13 +37,17 @@ export const game: Module<GameWithHistory, any> = {
 
     endThrow(state): void {
       if (state.throwsLeft === 1) {
-        state.throwsLeft = 3;
-        state.turn = (state.turn + 1) % store.state.players.list.length;
+        store.commit("game/nextTurn");
       } else {
         state.throwsLeft--;
       }
       state.multiplier = 1;
       save(state);
+    },
+
+    nextTurn(state): void {
+      state.throwsLeft = THROWS_PER_TURN;
+      state.turn = (state.turn + 1) % store.state.players.list.length;
     },
 
     throw(state, button: Button): void {
@@ -63,10 +69,17 @@ export const game: Module<GameWithHistory, any> = {
       }
     },
 
+    undoTurn(state): void {
+      while (state.throwsLeft !== 3) {
+        store.commit("game/undo");
+      }
+    },
+
     reset(state): void {
       state.history = [];
       state.multiplier = 1;
-      state.throwsLeft = 3;
+      state.throwsLeft = THROWS_PER_TURN;
+      state.turn = Math.min(state.turn, store.state.players.list.length - 1);
       store.state.players.list.forEach((player: Player) =>
         store.commit("players/update", { ...player, score: 0, state: {} })
       );
@@ -79,7 +92,7 @@ function defaultGame(): GameWithHistory {
   return {
     multiplier: 1,
     turn: 0,
-    throwsLeft: 3,
+    throwsLeft: THROWS_PER_TURN,
     history: []
   };
 }

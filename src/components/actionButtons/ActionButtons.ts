@@ -35,4 +35,13 @@ export class ActionButtons extends Mixins(PlayersMixin) {
   public undo(): void {
     this.$store.commit("game/undo");
   }
+
+  /**
+   * Undos current turn
+   *
+   * @memberof ActionButtons
+   */
+  public undoTurn(): void {
+    this.$store.commit("game/undoTurn");
+  }
 }
