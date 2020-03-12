@@ -1,7 +1,6 @@
 {
-  "name": "auth-vue",
+  "name": "@preterer/darts",
   "version": "0.1.0",
-  "private": true,
   "scripts": {
     "build": "webpack --mode development",
     "build:production": "webpack --mode production",
