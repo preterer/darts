@@ -59,11 +59,23 @@ export class MasterOutService extends DartsService {
    * @memberof MasterOutService
    */
   public score(button: Button): void {
-    if (this.scorable.includes(button.score) && !button.alwaysNegative) {
+    if (this.canBeScored(button)) {
       this.scoreScorable(button);
     } else {
       this.appendPlayerScore(this.currentPlayer, button.score);
     }
+  }
+
+  /**
+   * Can button be scored
+   *
+   * @protected
+   * @param {Button} button
+   * @returns {boolean}
+   * @memberof MasterOutService
+   */
+  protected canBeScored(button: Button): boolean {
+    return this.scorable.includes(button.score) && !button.alwaysNegative;
   }
 
   /**
@@ -90,7 +102,7 @@ export class MasterOutService extends DartsService {
    */
   public isClosed(button: Button): boolean {
     return (
-      !button.alwaysNegative &&
+      button.alwaysNegative ||
       this.players.every((player) => this.hasPlayerOpened(player, button.score))
     );
   }
@@ -153,7 +165,7 @@ export class MasterOutService extends DartsService {
       throw new Error("Scorable amount cannot be higher than 20");
     }
 
-    const firstScorableNumber = this.firstScorableNumber(scorableAmount);
+    const firstScorableNumber = this.lowestScorableNumber(scorableAmount);
 
     this.scorable = new Array(scorableAmount)
       .fill(0)
@@ -172,7 +184,7 @@ export class MasterOutService extends DartsService {
    * @returns {number}
    * @memberof MasterOutService
    */
-  protected firstScorableNumber(scorableAmount: number): number {
+  protected lowestScorableNumber(scorableAmount: number): number {
     return 21 - scorableAmount;
   }
 
@@ -256,7 +268,7 @@ export class MasterOutService extends DartsService {
    * @returns {boolean}
    * @memberof MasterOutService
    */
-  private hasPlayerOpened(player: Player, score: number): boolean {
+  protected hasPlayerOpened(player: Player, score: number): boolean {
     return this.playerState(player, score) === this.clicksToOpen;
   }
 }

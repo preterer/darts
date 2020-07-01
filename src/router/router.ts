@@ -3,8 +3,10 @@ import VueRouter from "vue-router";
 import { game301Route } from "./routes/301.route";
 import { game401Route } from "./routes/401.route";
 import { game501Route } from "./routes/501.route";
+import { ascendingRoute } from "./routes/ascending.route";
 import { blackRoute } from "./routes/black.route";
 import { classicRoute } from "./routes/classic.route";
+import { descendingRoute } from "./routes/descending.route";
 import { evenOutRoute } from "./routes/evenOut.route";
 import { homeRoute } from "./routes/home.route";
 import { masterOutRoute } from "./routes/masterOut.route";
@@ -30,6 +32,8 @@ export const routes = [
   reverseTenNoMiddleRoute,
   reverseFifteenRoute,
   reverseFifteenNoMiddleRoute,
+  ascendingRoute,
+  descendingRoute,
   classicRoute,
   game301Route,
   game401Route,

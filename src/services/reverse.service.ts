@@ -8,7 +8,7 @@ export class ReverseService extends MasterOutService {
    * @returns {number}
    * @memberof ReverseService
    */
-  protected firstScorableNumber(): number {
+  protected lowestScorableNumber(): number {
     return 1;
   }
 }
