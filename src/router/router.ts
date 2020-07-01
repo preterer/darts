@@ -10,6 +10,10 @@ import { homeRoute } from "./routes/home.route";
 import { masterOutRoute } from "./routes/masterOut.route";
 import { megaOutRoute } from "./routes/megaOut.route";
 import { oddOutRoute } from "./routes/oddOut.route";
+import { reverseFifteenRoute } from "./routes/reverseFifteen.route";
+import { reverseFifteenNoMiddleRoute } from "./routes/reverseFifteenNoMiddle.route";
+import { reverseTenRoute } from "./routes/reverseTen.route";
+import { reverseTenNoMiddleRoute } from "./routes/reverseTenNoMiddle.route";
 import { superMegaOutRoute } from "./routes/superMegaOut.route";
 import { whiteRoute } from "./routes/white.route";
 
@@ -22,10 +26,14 @@ export const routes = [
   evenOutRoute,
   blackRoute,
   whiteRoute,
+  reverseTenRoute,
+  reverseTenNoMiddleRoute,
+  reverseFifteenRoute,
+  reverseFifteenNoMiddleRoute,
   classicRoute,
   game301Route,
   game401Route,
-  game501Route
+  game501Route,
 ];
 
 export const router = new VueRouter({ routes });

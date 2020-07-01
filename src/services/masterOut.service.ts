@@ -25,17 +25,9 @@ export class MasterOutService extends DartsService {
    */
   public clicksToOpen = 3;
 
-  constructor(scorableAmount: number = 6) {
+  constructor(scorableAmount: number = 6, withMiddle: boolean = true) {
     super();
-    if (scorableAmount > 20) {
-      throw new Error("Scorable amount cannot be higher than 20");
-    }
-
-    const firstScorableNumber = 21 - scorableAmount;
-    this.scorable = new Array(scorableAmount)
-      .fill(0)
-      .map((_, index) => firstScorableNumber + index);
-    this.scorable.push(25);
+    this.setupScorableFields(scorableAmount, withMiddle);
   }
 
   /**
@@ -99,7 +91,7 @@ export class MasterOutService extends DartsService {
   public isClosed(button: Button): boolean {
     return (
       !button.alwaysNegative &&
-      this.players.every(player => this.hasPlayerOpened(player, button.score))
+      this.players.every((player) => this.hasPlayerOpened(player, button.score))
     );
   }
 
@@ -146,6 +138,45 @@ export class MasterOutService extends DartsService {
   }
 
   /**
+   * Prepares the scorable fields
+   *
+   * @protected
+   * @param {number} scorableAmount
+   * @param {boolean} withMiddle
+   * @memberof MasterOutService
+   */
+  protected setupScorableFields(
+    scorableAmount: number,
+    withMiddle: boolean
+  ): void {
+    if (scorableAmount > 20) {
+      throw new Error("Scorable amount cannot be higher than 20");
+    }
+
+    const firstScorableNumber = this.firstScorableNumber(scorableAmount);
+
+    this.scorable = new Array(scorableAmount)
+      .fill(0)
+      .map((_, index) => firstScorableNumber + index);
+
+    if (withMiddle) {
+      this.scorable.push(25);
+    }
+  }
+
+  /**
+   * Lowest scorable number
+   *
+   * @protected
+   * @param {number} scorableAmount
+   * @returns {number}
+   * @memberof MasterOutService
+   */
+  protected firstScorableNumber(scorableAmount: number): number {
+    return 21 - scorableAmount;
+  }
+
+  /**
    * Updates player state and multiplier for scoring calculations
    *
    * @private
@@ -175,7 +206,7 @@ export class MasterOutService extends DartsService {
     const newState = Math.min(clicks, this.clicksToOpen);
     store.commit("players/update", {
       ...player,
-      state: { ...player.state, [score]: newState }
+      state: { ...player.state, [score]: newState },
     });
   }
 
@@ -188,8 +219,8 @@ export class MasterOutService extends DartsService {
    */
   private addOtherPlayersScore(score: number): void {
     this.players
-      .filter(player => this.playerState(player, score) !== this.clicksToOpen)
-      .forEach(player => this.appendPlayerScore(player, score));
+      .filter((player) => this.playerState(player, score) !== this.clicksToOpen)
+      .forEach((player) => this.appendPlayerScore(player, score));
   }
 
   /**
@@ -201,7 +232,7 @@ export class MasterOutService extends DartsService {
    * @memberof MasterOutService
    */
   private hasPlayerLowestScore(player: Player): boolean {
-    return this.players.every(p => p.score >= player.score);
+    return this.players.every((p) => p.score >= player.score);
   }
 
   /**
@@ -213,7 +244,7 @@ export class MasterOutService extends DartsService {
    * @memberof MasterOutService
    */
   private hasPlayerClosedAll(player: Player): boolean {
-    return this.scorable.every(score => this.hasPlayerOpened(player, score));
+    return this.scorable.every((score) => this.hasPlayerOpened(player, score));
   }
 
   /**
