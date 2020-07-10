@@ -6,8 +6,8 @@ self.addEventListener("install", function(event) {
         "/index.html",
         "/css/bootstrap.css",
         "/css/styles.css",
+        "/img/dart.svg",
         "/dist/build.js",
-        "/dist/dart.svg",
       ]);
     })
   );
