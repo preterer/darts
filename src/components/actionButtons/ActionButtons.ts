@@ -1,6 +1,6 @@
 import Component from "vue-class-component";
-
 import { Mixins } from "vue-property-decorator";
+
 import { PlayersMixin } from "../../mixins/Players.mixin";
 import template from "./ActionButtons.html";
 

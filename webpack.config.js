@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: "./src/index.ts",
@@ -50,7 +51,7 @@ module.exports = {
     },
   },
   devServer: {
-    contentBase: path.join(__dirname, "public"),
+    contentBase: path.join(__dirname, "dist"),
     port: 9000,
   },
   performance: {
@@ -58,8 +59,8 @@ module.exports = {
   },
   devtool: "#eval-source-map",
   plugins: [
-    // make sure to include the plugin for the magic
     new VueLoaderPlugin(),
+    new CopyWebpackPlugin({ patterns: [{ from: "public" }] }),
   ],
 };
 
@@ -71,9 +72,6 @@ if (process.env.NODE_ENV === "production") {
       "process.env": {
         NODE_ENV: '"production"',
       },
-    }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true,
     }),
   ]);
   module.exports.optimization = { minimize: true };

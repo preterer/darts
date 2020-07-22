@@ -1,5 +1,9 @@
 # Darts
 
+## Live
+
+https://preterer-darts.herokuapp.com/
+
 ## Project setup
 
 ```
@@ -15,5 +19,5 @@ npm run debug
 ### Compiles and minifies for production
 
 ```
-npm run build:production
+npm run build
 ```
