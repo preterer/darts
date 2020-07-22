@@ -1,8 +1,8 @@
 <table class="table mt-5 text-center">
-  <ScoreboardHeader :numbers="numbers" />
+  <Scoreboard-Header :numbers="numbers" />
 
   <tbody>
-    <ScoreboardRow
+    <Scoreboard-Row
       v-for="(player, index) in players"
       :key="'player_' + index"
       :numbers="numbers"
