@@ -76,5 +76,5 @@ if (process.env.NODE_ENV === "production") {
       minimize: true,
     }),
   ]);
-  module.exports.config = { optimization: { minimize: true } };
+  module.exports.optimization = { minimize: true };
 }
