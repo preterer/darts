@@ -2,8 +2,7 @@
   "name": "@preterer/darts",
   "version": "0.1.0",
   "scripts": {
-    "build": "webpack --mode development",
-    "build:production": "webpack --mode production",
+    "build": "webpack --mode production",
     "watch": "webpack --mode development --watch true",
     "debug": "webpack-dev-server"
   },
@@ -31,7 +30,7 @@
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.39.2",
     "webpack-cli": "^3.3.7",
-    "webpack-dev-server": "3.8.2"
+    "webpack-dev-server": "^3.11.0"
   },
   "eslintConfig": {
     "root": true,
